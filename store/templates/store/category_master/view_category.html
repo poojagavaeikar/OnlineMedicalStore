@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>View Category | Pharmacy Admin Portal</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 245px;
+            height: 100vh;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            padding: 22px 15px;
+            overflow-y: auto;
+        }
+
+        .logo {
+            padding: 0 12px 25px;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .logo h2 {
+            color: #0f766e;
+            font-size: 23px;
+        }
+
+        .logo p {
+            color: #6b7280;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #9ca3af;
+            text-transform: uppercase;
+            padding: 0 12px;
+            margin: 18px 0 8px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 12px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 14px;
+        }
+
+        .menu-item:hover {
+            background: #f0fdfa;
+            color: #0f766e;
+        }
+
+        .menu-item.active {
+            background: #ccfbf1;
+            color: #0f766e;
+            font-weight: 600;
+        }
+
+        .menu-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 245px;
+            min-height: 100vh;
+        }
+
+
+        /* ================= TOPBAR ================= */
+
+        .topbar {
+            height: 75px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        .portal-title h3 {
+            font-size: 18px;
+            color: #111827;
+        }
+
+        .portal-title p {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 3px;
+        }
+
+        .admin-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .notification {
+            font-size: 20px;
+            color: #6b7280;
+        }
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: #0f766e;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .admin-text strong {
+            display: block;
+            font-size: 13px;
+            color: #111827;
+        }
+
+        .admin-text span {
+            display: block;
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            padding: 30px;
+        }
+
+        .breadcrumb {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            font-size: 26px;
+            color: #111827;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .back-btn {
+            background: #ffffff;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            padding: 10px 16px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #f8fafc;
+        }
+
+
+        /* ================= DETAILS CARD ================= */
+
+        .details-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            max-width: 900px;
+        }
+
+        .details-heading {
+            padding: 18px 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .details-heading h3 {
+            font-size: 15px;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .details-heading p {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .details-body {
+            padding: 25px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .detail-item {
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+
+        .detail-label {
+            display: block;
+            color: #6b7280;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .detail-value {
+            color: #111827;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .description-item {
+            grid-column: 1 / -1;
+        }
+
+        .description-item .detail-value {
+            font-weight: 400;
+            line-height: 1.6;
+            color: #4b5563;
+        }
+
+
+        /* ================= STATUS ================= */
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-inactive {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .description-item {
+                grid-column: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+            <h2>MedCare</h2>
+            <p>Pharmacy Management</p>
+        </div>
+
+
+        <div class="menu-title">Main Menu</div>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🏠</span>
+            Dashboard
+        </a>
+
+        <a href="{% url 'medicine_list' %}" class="menu-item">
+            <span class="menu-icon">💊</span>
+            Medicine Master
+        </a>
+
+        <a href="{% url 'category_list' %}" class="menu-item active">
+            <span class="menu-icon">📁</span>
+            Categories
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🏭</span>
+            Manufacturers
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🚚</span>
+            Suppliers
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">📦</span>
+            Inventory
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🛒</span>
+            Purchase
+        </a>
+
+
+        <div class="menu-title">Operations</div>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">📋</span>
+            Prescriptions
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🛍️</span>
+            Online Orders
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">💳</span>
+            Walk-in POS
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🧾</span>
+            Sales &amp; Invoice
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🚴</span>
+            Delivery
+        </a>
+
+
+        <div class="menu-title">Management</div>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">💰</span>
+            Payments
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">📊</span>
+            Reports
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">⚙️</span>
+            Settings
+        </a>
+
+    </div>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="main">
+
+        <!-- ================= TOPBAR ================= -->
+
+        <div class="topbar">
+
+            <div class="portal-title">
+                <h3>Pharmacy Admin Portal</h3>
+                <p>Online Medical Store &amp; Pharmacy Management System</p>
+            </div>
+
+
+            <div class="admin-area">
+
+                <div class="notification">
+                    🔔
+                </div>
+
+                <div class="admin-info">
+
+                    <div class="avatar">
+                        PA
+                    </div>
+
+                    <div class="admin-text">
+                        <strong>Pharmacy Admin</strong>
+                        <span>Administrator</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <div class="content">
+
+            <div class="breadcrumb">
+                Pharmacy Admin / Category Master / View Category
+            </div>
+
+
+            <div class="page-header">
+
+                <div>
+                    <h1>View Category</h1>
+                    <p>View complete category information</p>
+                </div>
+
+                <a href="{% url 'category_list' %}" class="back-btn">
+                    ← Back to Categories
+                </a>
+
+            </div>
+
+
+            <!-- ================= CATEGORY DETAILS ================= -->
+
+            <div class="details-card">
+
+                <div class="details-heading">
+                    <h3>Category Information</h3>
+                    <p>Details of {{ category.name }}</p>
+                </div>
+
+
+                <div class="details-body">
+
+                    <div class="details-grid">
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Category ID
+                            </span>
+
+                            <div class="detail-value">
+                                {{ category.category_id }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Category Name
+                            </span>
+
+                            <div class="detail-value">
+                                {{ category.name }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Status
+                            </span>
+
+                            <div class="detail-value">
+
+                                {% if category.status == "Active" %}
+
+                                    <span class="badge status-active">
+                                        Active
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge status-inactive">
+                                        Inactive
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-item description-item">
+
+                            <span class="detail-label">
+                                Description
+                            </span>
+
+                            <div class="detail-value">
+                                {{ category.description|default:"No description available." }}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

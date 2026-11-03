@@ -1,0 +1,94 @@
+
+
+<!-- ================= COMMON SIDEBAR ================= -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        <h2>MedCare</h2>
+        <p>Pharmacy Management</p>
+    </div>
+
+    <div class="menu-title">Main Menu</div>
+
+    <a href="#" class="menu-item">
+        <span class="menu-icon">🏠</span>
+        Dashboard
+    </a>
+
+    <a href="{% url 'medicine_list' %}" class="menu-item">
+        <span class="menu-icon">💊</span>
+        Medicine Master
+    </a>
+
+    <a href="{% url 'category_list' %}" class="menu-item">
+        <span class="menu-icon">📁</span>
+        Categories
+    </a>
+
+    <a href="{% url 'manufacturer_list' %}" class="menu-item">
+        <span class="menu-icon">🏭</span>
+        Manufacturers
+    </a>
+
+    <a href="{% url 'supplier_list' %}" class="menu-item">
+        <span class="menu-icon">🚚</span>
+        Suppliers
+    </a>
+
+    <a href="{% url 'inventory_list' %}" class="menu-item">
+    <span class="menu-icon">📦</span>
+    Inventory
+</a>
+
+    <a href="{% url 'purchase_list' %}" class="menu-item">
+    <span class="menu-icon">🛒</span>
+    Purchase
+    </a>
+
+
+    <div class="menu-title">Operations</div>
+
+    <a href="{% url 'prescription_list' %}" class="menu-item">
+    <span class="menu-icon">📋</span>
+    Prescriptions
+    </a>
+
+   <a href="{% url 'order_list' %}" class="menu-item">
+    <span class="menu-icon">🛍️</span>
+    Online Orders
+</a>
+
+<a href="{% url 'walk_in_pos' %}" class="menu-item">
+    <span class="menu-icon">🧾</span>
+    Walk-in POS
+</a>
+
+<a href="{% url 'sales_list' %}" class="menu-item">
+    <span class="menu-icon">🧾</span>
+    Sales & Invoice
+</a>
+<a href="{% url 'delivery_list' %}" class="menu-item">
+    <span class="menu-icon">🚚</span>
+    Delivery
+</a>
+
+
+
+    <div class="menu-title">Management</div>
+
+    <a href="{% url 'payment_list' %}" class="menu-item">
+    <span class="menu-icon">💰</span>
+    Payments
+   </a>
+
+     <a href="{% url 'report_dashboard' %}" class="sidebar-link">
+    📊 Reports
+</a>
+
+    <a href="#" class="menu-item">
+        <span class="menu-icon">⚙️</span>
+        Settings
+    </a>
+
+</div>

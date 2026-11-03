@@ -1,0 +1,556 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Deleted Sales | MedCare</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f8fa;
+            color: #37474f;
+        }
+
+        /* =========================================
+           SIDEBAR
+        ========================================== */
+
+        .sidebar {
+            width: 245px;
+            height: 100vh;
+            background: #ffffff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 24px 16px;
+            overflow-y: auto;
+            border-right: 1px solid #e8eef1;
+            z-index: 1000;
+        }
+
+        .sidebar .brand {
+            padding: 0 10px 22px;
+        }
+
+        .sidebar .brand h2 {
+            color: #009688;
+            font-size: 24px;
+            margin-bottom: 3px;
+        }
+
+        .sidebar .brand p {
+            color: #90a4ae;
+            font-size: 12px;
+        }
+
+        .sidebar .menu-title {
+            color: #90a4ae;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin: 18px 10px 8px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 12px;
+            margin-bottom: 4px;
+            border-radius: 7px;
+            color: #546e7a;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            background: #e0f2f1;
+            color: #00796b;
+        }
+
+        /* =========================================
+           MAIN CONTENT
+        ========================================== */
+
+        .main-content {
+            margin-left: 245px;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            font-size: 26px;
+            color: #263238;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            color: #78909c;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: #009688;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #00796b;
+        }
+
+        /* =========================================
+           CARD + TABLE
+        ========================================== */
+
+        .card {
+            background: #ffffff;
+            border-radius: 10px;
+            border: 1px solid #e5ecef;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid #edf1f3;
+        }
+
+        .card-header h3 {
+            font-size: 17px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f8fafb;
+        }
+
+        th {
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #78909c;
+            border-bottom: 1px solid #e8eef1;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px 16px;
+            border-bottom: 1px solid #edf1f3;
+            font-size: 14px;
+            vertical-align: top;
+        }
+
+        tbody tr:hover {
+            background: #fafcfc;
+        }
+
+        .sale-id {
+            color: #c62828;
+            font-weight: 700;
+        }
+
+        .customer-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .small-text {
+            color: #90a4ae;
+            font-size: 12px;
+        }
+
+        .medicine-item {
+            margin-bottom: 7px;
+        }
+
+        .medicine-name {
+            font-weight: 600;
+        }
+
+        .medicine-details {
+            color: #90a4ae;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .total {
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .deleted-badge {
+            display: inline-block;
+            background: #ffebee;
+            color: #c62828;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+         /* =========================================
+   RESTORE SALE
+========================================== */
+
+.restore-btn {
+    background: #e0f2f1;
+    color: #00796b;
+    border: 1px solid #b2dfdb;
+    padding: 7px 11px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.restore-btn:hover {
+    background: #00796b;
+    color: #ffffff;
+}
+
+/* =========================================
+   PERMANENT DELETE
+========================================== */
+
+.permanent-delete-btn {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+    padding: 7px 11px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 6px;
+    white-space: nowrap;
+}
+
+.permanent-delete-btn:hover {
+    background: #c62828;
+    color: #ffffff;
+}
+
+/* =========================================
+   ACTION BUTTONS SIDE BY SIDE
+========================================== */
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.action-buttons form {
+    margin: 0;
+}
+
+.permanent-delete-btn {
+    margin-top: 0;
+}
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #90a4ae;
+        }
+
+        .empty-state .icon {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .page-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    {% include 'store/includes/sidebar.html' %}
+
+    <main class="main-content">
+
+        <!-- =========================================
+             PAGE HEADER
+        ========================================== -->
+
+        <div class="page-header">
+
+            <div>
+                <h1>Deleted Sales History</h1>
+
+                <p>
+                    View sales removed from the active sales history
+                </p>
+            </div>
+
+            <a
+                href="{% url 'sales_list' %}"
+                class="back-btn"
+            >
+                ← Back to Sales
+            </a>
+
+        </div>
+
+
+       <!-- =========================================
+     DELETED SALES
+========================================== -->
+
+<div class="card">
+
+    <div class="card-header">
+        <h3>Deleted Records</h3>
+    </div>
+
+    {% if deleted_sales %}
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Sale ID</th>
+                    <th>Customer</th>
+                    <th>Purchased Medicines</th>
+                    <th>Sale Date</th>
+                    <th>Deleted On</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for sale in deleted_sales %}
+
+                <tr>
+
+                    <!-- SALE ID -->
+                    <td>
+                        <span class="sale-id">
+                            {{ sale.sale_id }}
+                        </span>
+                    </td>
+
+
+                    <!-- CUSTOMER -->
+                    <td>
+
+                        <div class="customer-name">
+                            {{ sale.customer_name|default:"Walk-in Customer" }}
+                        </div>
+
+                        <div class="small-text">
+                            {{ sale.customer_phone|default:"No phone" }}
+                        </div>
+
+                    </td>
+
+
+                    <!-- MEDICINES -->
+                    <td>
+
+                        {% for item in sale.items.all %}
+
+                        <div class="medicine-item">
+
+                            <div class="medicine-name">
+                                {{ item.medicine.name }}
+                            </div>
+
+                            <div class="medicine-details">
+                                {{ item.medicine.medicine_id|default:"-" }}
+                                &nbsp; • &nbsp;
+                                Qty: {{ item.quantity }}
+                            </div>
+
+                        </div>
+
+                        {% empty %}
+
+                        -
+
+                        {% endfor %}
+
+                    </td>
+
+
+                    <!-- SALE DATE -->
+                    <td>
+
+                        {{ sale.sale_date|date:"d M Y" }}
+
+                        <div class="small-text">
+                            {{ sale.sale_date|date:"h:i A" }}
+                        </div>
+
+                    </td>
+
+
+                    <!-- DELETED DATE -->
+                    <td>
+
+                        {{ sale.deleted_at|date:"d M Y" }}
+
+                        <div class="small-text">
+                            {{ sale.deleted_at|date:"h:i A" }}
+                        </div>
+
+                    </td>
+
+
+                    <!-- TOTAL -->
+                    <td>
+
+                        <span class="total">
+                            ₹{{ sale.total_amount|floatformat:2 }}
+                        </span>
+
+                    </td>
+
+
+                    <!-- STATUS -->
+                    <td>
+
+                        <span class="deleted-badge">
+                            Deleted
+                        </span>
+
+                    </td>
+
+
+                    <!-- ACTION -->
+                    <td>
+
+                        <div class="action-buttons">
+
+                            <!-- RESTORE -->
+                            <form
+                                method="POST"
+                                action="{% url 'restore_sale' sale.id %}"
+                                onsubmit="return confirm('Restore {{ sale.sale_id }} back to Sales History?');"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="restore-btn"
+                                >
+                                    ♻️ Restore
+                                </button>
+
+                            </form>
+
+
+                            <!-- PERMANENT DELETE -->
+                            <form
+                                method="POST"
+                                action="{% url 'permanently_delete_sale' sale.id %}"
+                                onsubmit="return confirm('Permanently delete {{ sale.sale_id }}? This cannot be restored. Medicine stock will NOT change.');"
+                            >
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="permanent-delete-btn"
+                                >
+                                    🗑 Permanently Delete
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    {% else %}
+
+    <!-- NO DELETED SALES -->
+    <div class="empty-state">
+
+        <div class="icon">
+            🗑️
+        </div>
+
+        <h3>No Deleted Sales</h3>
+
+        <p>
+            Deleted sale records will appear here.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+</main>
+
+</body>
+
+</html>

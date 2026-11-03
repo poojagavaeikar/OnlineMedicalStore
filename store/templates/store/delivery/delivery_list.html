@@ -1,0 +1,859 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Delivery Management | MedCare</title>
+
+
+    <style>
+
+        /* =========================================
+           RESET
+        ========================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f8fa;
+            color: #37474f;
+        }
+
+
+        /* =========================================
+           SIDEBAR
+        ========================================= */
+
+        .sidebar {
+            width: 245px;
+            height: 100vh;
+            background: #ffffff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 24px 16px;
+            overflow-y: auto;
+            border-right: 1px solid #e8eef1;
+            z-index: 1000;
+        }
+
+        .sidebar .brand {
+            padding: 0 10px 22px;
+        }
+
+        .sidebar .brand h2 {
+            color: #009688;
+            font-size: 24px;
+            margin-bottom: 3px;
+        }
+
+        .sidebar .brand p {
+            color: #90a4ae;
+            font-size: 12px;
+        }
+
+        .sidebar .menu-title {
+            color: #90a4ae;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin: 18px 10px 8px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 12px;
+            margin-bottom: 4px;
+            border-radius: 7px;
+            color: #546e7a;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            background: #e0f2f1;
+            color: #00796b;
+        }
+
+        .sidebar a.active {
+            background: #e0f2f1;
+            color: #00796b;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+           MAIN CONTENT
+        ========================================= */
+
+        .main-content {
+            margin-left: 245px;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+
+        /* =========================================
+           PAGE HEADER
+        ========================================= */
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            font-size: 26px;
+            color: #263238;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            color: #78909c;
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           SUMMARY CARDS
+        ========================================= */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #e5ecef;
+        }
+
+        .summary-label {
+            color: #78909c;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .summary-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: #263238;
+        }
+
+
+        /* =========================================
+           DELIVERY CARD
+        ========================================= */
+
+        .card {
+            background: #ffffff;
+            border-radius: 10px;
+            border: 1px solid #e5ecef;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid #edf1f3;
+        }
+
+        .card-header h3 {
+            font-size: 17px;
+            color: #37474f;
+        }
+
+
+        /* =========================================
+           TABLE
+        ========================================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 1180px;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f8fafb;
+        }
+
+        th {
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #78909c;
+            border-bottom: 1px solid #e8eef1;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px 16px;
+            border-bottom: 1px solid #edf1f3;
+            font-size: 14px;
+            vertical-align: top;
+        }
+
+        tbody tr:hover {
+            background: #fafcfc;
+        }
+
+
+        /* =========================================
+           DELIVERY DETAILS
+        ========================================= */
+
+        .delivery-id {
+            color: #00796b;
+            font-weight: 700;
+        }
+
+        .order-id {
+            color: #1565c0;
+            font-weight: 700;
+        }
+
+        .customer-name {
+            font-weight: 600;
+            color: #37474f;
+            margin-bottom: 4px;
+        }
+
+        .small-text {
+            color: #90a4ae;
+            font-size: 12px;
+            line-height: 1.5;
+            margin-top: 3px;
+        }
+
+
+        /* =========================================
+           STATUS BADGES
+        ========================================= */
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .status-assigned {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .status-out {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .status-delivered {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+
+        /* =========================================
+           ACTIONS
+        ========================================= */
+
+        .action-area {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            white-space: nowrap;
+        }
+
+        .action-area form {
+            margin: 0;
+        }
+
+        .action-btn {
+            display: inline-block;
+            background: #009688;
+            color: #ffffff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+        }
+
+        .action-btn:hover {
+            background: #00796b;
+            color: #ffffff;
+        }
+
+        .view-delivery-btn {
+            background: #546e7a;
+        }
+
+        .view-delivery-btn:hover {
+            background: #37474f;
+        }
+
+        .completed-text {
+            color: #2e7d32;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+           EMPTY STATE
+        ========================================= */
+
+        .empty-state {
+            text-align: center;
+            padding: 55px 20px;
+            color: #90a4ae;
+        }
+
+        .empty-state .icon {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            color: #455a64;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 1100px) {
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .page-header {
+                align-items: flex-start;
+                gap: 15px;
+                flex-direction: column;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         COMMON SIDEBAR
+    ========================================== -->
+
+    {% include 'store/includes/sidebar.html' %}
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =========================================
+             PAGE HEADER
+        ========================================== -->
+
+        <div class="page-header">
+
+            <div>
+
+                <h1>
+                    🚚 Delivery Management
+                </h1>
+
+                <p>
+                    Manage delivery assignments and track
+                    customer order deliveries
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             SUMMARY CARDS
+        ========================================== -->
+
+        <div class="summary-grid">
+
+
+            <!-- TOTAL DELIVERIES -->
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Total Deliveries
+                </div>
+
+                <div class="summary-value">
+                    {{ total_deliveries }}
+                </div>
+
+            </div>
+
+
+            <!-- ASSIGNED -->
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Assigned
+                </div>
+
+                <div class="summary-value">
+                    {{ assigned_count }}
+                </div>
+
+            </div>
+
+
+            <!-- OUT FOR DELIVERY -->
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Out for Delivery
+                </div>
+
+                <div class="summary-value">
+                    {{ out_for_delivery_count }}
+                </div>
+
+            </div>
+
+
+            <!-- DELIVERED -->
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Delivered
+                </div>
+
+                <div class="summary-value">
+                    {{ delivered_count }}
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================================
+             DELIVERY RECORDS
+        ========================================== -->
+
+        <div class="card">
+
+
+            <div class="card-header">
+
+                <h3>
+                    Delivery Records
+                </h3>
+
+            </div>
+
+
+            {% if deliveries %}
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+
+                        <!-- =========================================
+                             TABLE HEADER
+                        ========================================== -->
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Delivery ID
+                                </th>
+
+                                <th>
+                                    Order ID
+                                </th>
+
+                                <th>
+                                    Customer
+                                </th>
+
+                                <th>
+                                    Delivery Address
+                                </th>
+
+                                <th>
+                                    Delivery Person
+                                </th>
+
+                                <th>
+                                    Expected Date
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Assigned On
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <!-- =========================================
+                             TABLE BODY
+                        ========================================== -->
+
+                        <tbody>
+
+
+                            {% for delivery in deliveries %}
+
+
+                                <tr>
+
+
+                                    <!-- DELIVERY ID -->
+
+                                    <td>
+
+                                        <span class="delivery-id">
+                                            {{ delivery.delivery_id }}
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- ORDER ID -->
+
+                                    <td>
+
+                                        <span class="order-id">
+                                            {{ delivery.order.order_id }}
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- CUSTOMER -->
+
+                                    <td>
+
+                                        <div class="customer-name">
+                                            {{ delivery.order.customer_name }}
+                                        </div>
+
+                                        <div class="small-text">
+                                            {{ delivery.order.phone }}
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- DELIVERY ADDRESS -->
+
+                                    <td>
+
+                                        <div>
+                                            {{ delivery.order.delivery_address }}
+                                        </div>
+
+                                        {% if delivery.order.delivery_pincode %}
+
+                                            <div class="small-text">
+                                                PIN:
+                                                {{ delivery.order.delivery_pincode }}
+                                            </div>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- DELIVERY PERSON -->
+
+                                    <td>
+
+                                        <div class="customer-name">
+                                            {{ delivery.delivery_person_name }}
+                                        </div>
+
+                                        <div class="small-text">
+                                            {{ delivery.delivery_person_phone }}
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- EXPECTED DELIVERY DATE -->
+
+                                    <td>
+
+                                        {% if delivery.order.expected_delivery_date %}
+
+                                            {{ delivery.order.expected_delivery_date|date:"d M Y" }}
+
+                                        {% else %}
+
+                                            <span class="small-text">
+                                                Not set
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- DELIVERY STATUS -->
+
+                                    <td>
+
+                                        {% if delivery.status == 'Delivered' %}
+
+                                            <span class="status-badge status-delivered">
+                                                Delivered
+                                            </span>
+
+                                        {% elif delivery.status == 'Out for Delivery' %}
+
+                                            <span class="status-badge status-out">
+                                                Out for Delivery
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="status-badge status-assigned">
+                                                Assigned
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- ASSIGNED DATE -->
+
+                                    <td>
+
+                                        {{ delivery.assigned_at|date:"d M Y" }}
+
+                                        <div class="small-text">
+                                            {{ delivery.assigned_at|date:"h:i A" }}
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- =========================================
+                                         ACTION
+                                    ========================================== -->
+
+                                    <td>
+
+                                        <div class="action-area">
+
+
+                                            <!-- VIEW DELIVERY -->
+
+                                            <a
+                                                href="{% url 'view_delivery' delivery.id %}"
+                                                class="action-btn view-delivery-btn"
+                                            >
+                                                View
+                                            </a>
+
+
+                                            <!-- ASSIGNED -> OUT FOR DELIVERY -->
+
+                                            {% if delivery.status == 'Assigned' %}
+
+                                                <form
+                                                    method="POST"
+                                                    action="{% url 'delivery_out_for_delivery' delivery.id %}"
+                                                >
+
+                                                    {% csrf_token %}
+
+                                                    <button
+                                                        type="submit"
+                                                        class="action-btn"
+                                                    >
+                                                        🚚 Out for Delivery
+                                                    </button>
+
+                                                </form>
+
+
+                                            <!-- OUT FOR DELIVERY -> DELIVERED -->
+
+                                            {% elif delivery.status == 'Out for Delivery' %}
+
+                                                <form
+                                                    method="POST"
+                                                    action="{% url 'delivery_delivered' delivery.id %}"
+                                                >
+
+                                                    {% csrf_token %}
+
+                                                    <button
+                                                        type="submit"
+                                                        class="action-btn"
+                                                    >
+                                                        ✓ Delivered
+                                                    </button>
+
+                                                </form>
+
+
+                                            <!-- ALREADY DELIVERED -->
+
+                                            {% else %}
+
+                                                <span class="completed-text">
+                                                    ✓ Completed
+                                                </span>
+
+                                            {% endif %}
+
+
+                                        </div>
+
+                                    </td>
+
+
+                                </tr>
+
+
+                            {% endfor %}
+
+
+                        </tbody>
+
+
+                    </table>
+
+                </div>
+
+
+            {% else %}
+
+
+                <!-- =========================================
+                     NO DELIVERIES
+                ========================================== -->
+
+                <div class="empty-state">
+
+                    <div class="icon">
+                        🚚
+                    </div>
+
+                    <h3>
+                        No Deliveries Yet
+                    </h3>
+
+                    <p>
+                        Delivery records will appear here when
+                        online orders are assigned for delivery.
+                    </p>
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </main>
+
+
+</body>
+
+</html>

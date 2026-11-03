@@ -1,0 +1,1615 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Walk-in POS | MedCare</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        /* =========================================
+           PAGE LAYOUT
+        ========================================= */
+
+        .page-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+      /* =========================================
+   SIDEBAR
+========================================= */
+
+.sidebar {
+    width: 245px;
+    height: 100vh;
+    background: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 24px 16px;
+    overflow-y: auto;
+    border-right: 1px solid #e8eef1;
+    z-index: 1000;
+}
+
+.sidebar .brand {
+    padding: 0 10px 22px;
+}
+
+.sidebar .brand h2 {
+    color: #009688;
+    font-size: 24px;
+    margin-bottom: 3px;
+}
+
+.sidebar .brand p {
+    color: #90a4ae;
+    font-size: 12px;
+}
+
+.sidebar .menu-title {
+    color: #90a4ae;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 18px 10px 8px;
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 12px;
+    margin-bottom: 4px;
+    border-radius: 7px;
+    color: #546e7a;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.sidebar a:hover {
+    background: #e0f2f1;
+    color: #00796b;
+}
+
+.sidebar a.active {
+    background: #e0f2f1;
+    color: #00796b;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   MAIN CONTENT
+========================================= */
+
+.main-content {
+    margin-left: 245px;
+    min-height: 100vh;
+    padding: 30px;
+}
+        /* =========================================
+           PAGE HEADER
+        ========================================= */
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            color: #111827;
+            margin-bottom: 6px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .invoice-badge {
+            background: #ffffff;
+            padding: 12px 18px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* =========================================
+           POS GRID
+        ========================================= */
+
+        .pos-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+            gap: 22px;
+        }
+
+        /* =========================================
+           CARDS
+        ========================================= */
+
+        .card {
+            background: #ffffff;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            padding: 22px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            color: #111827;
+        }
+
+        /* =========================================
+           CUSTOMER DETAILS
+        ========================================= */
+
+        .customer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            outline: none;
+            font-size: 14px;
+            background: #ffffff;
+        }
+
+        .form-control:focus {
+            border-color: #2563eb;
+        }
+
+        /* =========================================
+           MEDICINE SEARCH
+        ========================================= */
+
+        .medicine-search {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .medicine-search input {
+            flex: 1;
+        }
+
+        .search-btn {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 0 20px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* =========================================
+           BILL TABLE
+        ========================================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .bill-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .bill-table th {
+            text-align: left;
+            padding: 12px 10px;
+            background: #f9fafb;
+            color: #4b5563;
+            font-size: 13px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .bill-table td {
+            padding: 15px 10px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 35px !important;
+            color: #9ca3af;
+        }
+
+        /* =========================================
+           BILL SUMMARY
+        ========================================= */
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 11px 0;
+            font-size: 14px;
+        }
+
+        .summary-row + .summary-row {
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .discount-input {
+            width: 100px;
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            text-align: right;
+        }
+
+        .grand-total {
+            margin-top: 10px;
+            padding-top: 16px;
+            border-top: 2px solid #e5e7eb;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        /* =========================================
+           PAYMENT METHOD
+        ========================================= */
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .payment-option {
+            position: relative;
+        }
+
+        .payment-option input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .payment-option label {
+            display: block;
+            text-align: center;
+            padding: 14px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .payment-option input:checked + label {
+            border-color: #2563eb;
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        /* =========================================
+           COMPLETE SALE BUTTON
+        ========================================= */
+
+        .complete-sale-btn {
+            width: 100%;
+            border: none;
+            background: #16a34a;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .complete-sale-btn:hover {
+            background: #15803d;
+        }
+
+        /* =========================================
+           INFO BOX
+        ========================================= */
+
+        .info-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 13px;
+            border-radius: 7px;
+            font-size: 13px;
+            color: #1e40af;
+            line-height: 1.5;
+        }
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 1000px) {
+
+            .pos-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .customer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        /* =========================================
+   MEDICINE SEARCH RESULTS
+========================================= */
+
+.medicine-results {
+    margin-bottom: 20px;
+}
+
+.medicine-hidden {
+    display: none !important;
+}
+
+.medicine-result-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 13px 14px;
+    margin-bottom: 8px;
+    border: 1px solid #edf1f3;
+    border-radius: 7px;
+    background: #f8fafb;
+}
+
+.medicine-result-item strong {
+    color: #263238;
+    font-size: 14px;
+}
+
+.medicine-meta {
+    margin-top: 5px;
+    color: #78909c;
+    font-size: 12px;
+}
+
+.add-medicine-btn {
+    border: none;
+    background: #e0f2f1;
+    color: #00796b;
+    padding: 8px 13px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.add-medicine-btn:hover {
+    background: #b2dfdb;
+}
+
+.no-medicines {
+    padding: 15px;
+    color: #90a4ae;
+    text-align: center;
+}
+
+
+/* =========================================
+   POS QUANTITY CONTROLS
+========================================= */
+
+.qty-minus,
+.qty-plus {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #d6e1e5;
+    background: #ffffff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.qty-minus:hover,
+.qty-plus:hover {
+    background: #e0f2f1;
+    color: #00796b;
+}
+
+.qty-value {
+    display: inline-block;
+    min-width: 30px;
+    text-align: center;
+    margin: 0 6px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   REMOVE ITEM BUTTON
+========================================= */
+
+.remove-item-btn {
+    border: 1px solid #fecaca;
+    background: #fef2f2;
+    color: #dc2626;
+    padding: 7px 12px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.remove-item-btn:hover {
+    background: #dc2626;
+    color: #ffffff;
+    border-color: #dc2626;
+    transform: translateY(-1px);
+}
+
+.remove-item-btn:active {
+    transform: translateY(0);
+}
+
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- =========================================
+         COMMON SIDEBAR
+    ========================================== -->
+
+    <div class="sidebar-wrapper">
+        {% include 'store/includes/sidebar.html' %}
+    </div>
+
+
+    <!-- =========================================
+         MAIN POS CONTENT
+    ========================================== -->
+
+    <main class="main-content">
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+            <div>
+                <h1>🧾 Walk-in POS</h1>
+                <p>Create counter sales and generate customer bills.</p>
+            </div>
+
+            <div class="invoice-badge">
+                New Sale
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             POS GRID
+        ========================================== -->
+
+        <div class="pos-grid">
+
+
+            <!-- =========================================
+                 LEFT SIDE
+            ========================================== -->
+
+            <div>
+
+<!-- CUSTOMER DETAILS -->
+
+<form method="POST" id="posSaleForm">
+
+    {% csrf_token %}
+
+<div class="card">
+                    <div class="card-title">
+                        Customer Details
+                    </div>
+
+                    <div class="customer-grid">
+
+                        <div class="form-group">
+
+                            <label>
+                                Customer Name
+                            </label>
+
+                            <input
+                                type="text"
+                                name="customer_name"
+                                class="form-control"
+                                placeholder="Walk-in Customer"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="text"
+                                name="customer_phone"
+                                class="form-control"
+                                placeholder="Enter phone number"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     MEDICINE SECTION
+                ========================================== -->
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Add Medicines
+                    </div>
+
+
+                    <!-- MEDICINE SEARCH -->
+
+                    <div class="medicine-search">
+
+    <input
+        type="text"
+        id="medicineSearch"
+        class="form-control"
+        placeholder="Search medicine by name, ID or barcode..."
+        autocomplete="off"
+    >
+
+    <button
+        type="button"
+        id="medicineSearchBtn"
+        class="search-btn"
+    >
+        Search
+    </button>
+
+</div>
+
+
+<!-- =========================================
+     MEDICINE SEARCH RESULTS
+========================================== -->
+
+<div id="medicineResults" class="medicine-results">
+
+    
+
+    {% for medicine in medicines %}
+
+       <div
+    class="medicine-result-item medicine-hidden"
+    data-search="{{ medicine.name }} {{ medicine.medicine_id|default:'' }} {{ medicine.barcode|default:'' }}"
+>
+            <div>
+
+                <strong>
+                    {{ medicine.name }}
+                </strong>
+
+                <div class="medicine-meta">
+
+                    ID:
+                    {{ medicine.medicine_id|default:"-" }}
+
+                    &nbsp; | &nbsp;
+
+                    Stock:
+                    {{ medicine.stock }}
+
+                    &nbsp; | &nbsp;
+
+                    Rate:
+                    ₹{{ medicine.selling_rate|default:"0.00" }}
+
+                </div>
+
+            </div>
+
+            <button
+    type="button"
+    class="add-medicine-btn"
+    data-id="{{ medicine.id }}"
+    data-name="{{ medicine.name }}"
+    data-stock="{{ medicine.stock }}"
+    data-rate="{{ medicine.selling_rate|default:'0.00' }}"
+>
+          + Add
+          </button>
+
+        </div>
+
+    {% empty %}
+
+        <div class="no-medicines">
+            No active medicines with available stock.
+        </div>
+
+    {% endfor %}
+
+</div>
+                    <!-- =========================================
+                         BILL ITEMS TABLE
+                    ========================================== -->
+
+                    <div class="table-wrapper">
+
+                        <table class="bill-table">
+
+                            <thead>
+
+                                <tr>
+                                    <th>Medicine</th>
+                                    <th>Stock</th>
+                                    <th>Rate</th>
+                                    <th>Qty</th>
+                                    <th>Total</th>
+                                    <th>Action</th>
+                                </tr>
+
+                            </thead>
+
+                     <tbody id="billItemsBody">
+
+                                <tr>
+
+                                    <td
+                                        colspan="6"
+                                        class="empty-cart"
+                                    >
+                                        No medicines added yet.
+                                        <br>
+                                        Search and add medicines to the bill.
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================================
+                 RIGHT SIDE
+            ========================================== -->
+
+            <div>
+
+
+               <!-- =========================================
+     BILL SUMMARY
+========================================== -->
+
+<div class="card">
+
+    <div class="card-title">
+        Bill Summary
+    </div>
+
+
+    <!-- SUBTOTAL -->
+
+    <div class="summary-row">
+
+        <span>
+            Subtotal
+        </span>
+
+        <strong id="subtotalAmount">
+            ₹0.00
+        </strong>
+
+    </div>
+
+
+    <!-- DISCOUNT -->
+
+    <div class="summary-row">
+
+        <span>
+            Discount
+        </span>
+
+        <input
+            type="number"
+            class="discount-input"
+            id="discountInput"
+            name="discount"
+            value="0"
+            min="0"
+            step="0.01"
+        >
+
+    </div>
+
+
+    <!-- GRAND TOTAL -->
+
+    <div class="summary-row grand-total">
+
+        <span>
+            Grand Total
+        </span>
+
+        <span id="grandTotalAmount">
+            ₹0.00
+        </span>
+
+    </div>
+
+</div>
+
+                <!-- =========================================
+                     PAYMENT
+                ========================================== -->
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Payment Method
+                    </div>
+
+
+                    <div class="payment-options">
+
+
+                        <!-- CASH -->
+
+                        <div class="payment-option">
+
+                            <input
+                                type="radio"
+                                name="payment_method"
+                                id="payment_cash"
+                                value="Cash"
+                                checked
+                            >
+
+                            <label for="payment_cash">
+                                💵 Cash
+                            </label>
+
+                        </div>
+
+
+                        <!-- UPI -->
+
+                        <div class="payment-option">
+
+                            <input
+                                type="radio"
+                                name="payment_method"
+                                id="payment_upi"
+                                value="UPI"
+                            >
+
+                            <label for="payment_upi">
+                                📱 UPI
+                            </label>
+
+                        </div>
+
+
+                        <!-- CARD -->
+
+                        <div class="payment-option">
+
+                            <input
+                                type="radio"
+                                name="payment_method"
+                                id="payment_card"
+                                value="Card"
+                            >
+
+                            <label for="payment_card">
+                                💳 Card
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INFO -->
+
+                <div class="card">
+
+                    <div class="info-box">
+
+                        Stock will be deducted only after the sale
+                        is successfully completed.
+
+                    </div>
+
+                </div>
+ <!-- =========================================
+     SALE DATA
+========================================== -->
+
+<input
+    type="hidden"
+    id="saleItemsData"
+    name="sale_items"
+    value=""
+>
+
+
+<!-- =========================================
+     COMPLETE SALE
+========================================== -->
+
+<button
+    type="button"
+    class="complete-sale-btn"
+    id="completeSaleBtn"
+>
+    ✓ Complete Sale
+</button>
+
+</form>
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    // =========================================
+    // GET ELEMENTS
+    // =========================================
+
+    const searchInput =
+        document.getElementById('medicineSearch');
+
+    const searchButton =
+        document.getElementById('medicineSearchBtn');
+
+    const medicineItems =
+        document.querySelectorAll('.medicine-result-item');
+
+    const billItemsBody =
+        document.getElementById('billItemsBody');
+
+    const addMedicineButtons =
+        document.querySelectorAll('.add-medicine-btn');
+
+    const subtotalAmount =
+        document.getElementById('subtotalAmount');
+
+    const discountInput =
+        document.getElementById('discountInput');
+
+    const grandTotalAmount =
+        document.getElementById('grandTotalAmount');
+
+    const saleItemsData =
+    document.getElementById('saleItemsData');
+
+const completeSaleBtn =
+    document.getElementById('completeSaleBtn');    
+
+
+    // =========================================
+    // UPDATE BILL SUMMARY
+    // =========================================
+
+    function updateBillSummary() {
+
+        let subtotal = 0;
+
+        const billRows =
+            billItemsBody.querySelectorAll(
+                'tr[data-medicine-id]'
+            );
+
+        billRows.forEach(function (row) {
+
+            const totalCell =
+                row.children[4];
+
+            const lineTotal =
+                parseFloat(
+                    totalCell.textContent
+                        .replace('₹', '')
+                        .trim()
+                ) || 0;
+
+            subtotal += lineTotal;
+
+        });
+
+
+        // =========================================
+        // GET DISCOUNT
+        // =========================================
+
+        let discount =
+            parseFloat(discountInput.value) || 0;
+
+        if (discount < 0) {
+
+            discount = 0;
+
+            discountInput.value = 0;
+
+        }
+
+
+        // =========================================
+        // DISCOUNT CANNOT EXCEED SUBTOTAL
+        // =========================================
+
+        if (discount > subtotal) {
+
+            discount = subtotal;
+
+        }
+
+
+        // =========================================
+        // CALCULATE GRAND TOTAL
+        // =========================================
+
+        const grandTotal =
+            subtotal - discount;
+
+
+        // =========================================
+        // DISPLAY TOTALS
+        // =========================================
+
+        subtotalAmount.textContent =
+            '₹' + subtotal.toFixed(2);
+
+        grandTotalAmount.textContent =
+            '₹' + grandTotal.toFixed(2);
+
+    }
+
+
+    // =========================================
+    // DISCOUNT CHANGE
+    // =========================================
+
+    discountInput.addEventListener(
+        'input',
+        function () {
+
+            updateBillSummary();
+
+        }
+    );
+
+
+    // =========================================
+    // MEDICINE SEARCH
+    // =========================================
+
+    function searchMedicines() {
+
+        const searchText =
+            searchInput.value
+                .trim()
+                .toLowerCase();
+
+        medicineItems.forEach(function (medicine) {
+
+            const medicineData =
+                (medicine.dataset.search || '')
+                    .trim()
+                    .toLowerCase();
+
+            if (searchText === '') {
+
+                medicine.classList.add(
+                    'medicine-hidden'
+                );
+
+            }
+
+            else if (
+                medicineData.includes(searchText)
+            ) {
+
+                medicine.classList.remove(
+                    'medicine-hidden'
+                );
+
+            }
+
+            else {
+
+                medicine.classList.add(
+                    'medicine-hidden'
+                );
+
+            }
+
+        });
+
+    }
+
+
+    // =========================================
+    // SEARCH BUTTON
+    // =========================================
+
+    searchButton.addEventListener(
+        'click',
+        searchMedicines
+    );
+
+
+    // =========================================
+    // ENTER KEY SEARCH
+    // =========================================
+
+    searchInput.addEventListener(
+        'keydown',
+        function (event) {
+
+            if (event.key === 'Enter') {
+
+                event.preventDefault();
+
+                searchMedicines();
+
+            }
+
+        }
+    );
+
+
+    // =========================================
+    // LIVE SEARCH
+    // =========================================
+
+    searchInput.addEventListener(
+        'input',
+        searchMedicines
+    );
+
+
+    // =========================================
+    // ADD MEDICINE TO BILL
+    // =========================================
+
+    addMedicineButtons.forEach(function (button) {
+
+        button.addEventListener(
+            'click',
+            function () {
+
+                // =========================================
+                // GET MEDICINE DETAILS
+                // =========================================
+
+                const medicineId =
+                    button.dataset.id;
+
+                const medicineName =
+                    button.dataset.name;
+
+                const medicineStock =
+                    parseInt(
+                        button.dataset.stock || 0
+                    );
+
+                const medicineRate =
+                    parseFloat(
+                        button.dataset.rate || 0
+                    );
+
+
+                // =========================================
+                // BLOCK ZERO PRICE MEDICINE
+                // =========================================
+
+                if (medicineRate <= 0) {
+
+                    alert(
+                        'Selling rate is not set for this medicine.'
+                    );
+
+                    return;
+
+                }
+
+
+                // =========================================
+                // CHECK MEDICINE ALREADY IN BILL
+                // =========================================
+
+                const existingRow =
+                    billItemsBody.querySelector(
+                        `tr[data-medicine-id="${medicineId}"]`
+                    );
+
+
+                // =========================================
+                // IF MEDICINE ALREADY EXISTS
+                // =========================================
+
+                if (existingRow) {
+
+                    const qtyValue =
+                        existingRow.querySelector(
+                            '.qty-value'
+                        );
+
+                    const totalCell =
+                        existingRow.children[4];
+
+                    let currentQuantity =
+                        parseInt(
+                            qtyValue.textContent
+                        );
+
+
+                    // =========================================
+                    // CHECK STOCK
+                    // =========================================
+
+                    if (
+                        currentQuantity <
+                        medicineStock
+                    ) {
+
+                        currentQuantity++;
+
+
+                        // UPDATE QUANTITY
+
+                        qtyValue.textContent =
+                            currentQuantity;
+
+
+                        // UPDATE MEDICINE TOTAL
+
+                        totalCell.textContent =
+                            '₹' +
+                            (
+                                medicineRate *
+                                currentQuantity
+                            ).toFixed(2);
+
+
+                        // UPDATE BILL TOTAL
+
+                        updateBillSummary();
+
+                    }
+
+                    else {
+
+                        alert(
+                            'Insufficient stock. Available quantity: ' +
+                            medicineStock
+                        );
+
+                    }
+
+                    return;
+
+                }
+
+
+                // =========================================
+                // REMOVE EMPTY CART MESSAGE
+                // =========================================
+
+                const emptyCart =
+                    billItemsBody.querySelector(
+                        '.empty-cart'
+                    );
+
+                if (emptyCart) {
+
+                    emptyCart
+                        .parentElement
+                        .remove();
+
+                }
+
+
+                // =========================================
+                // CREATE BILL ROW
+                // =========================================
+
+                const row =
+                    document.createElement('tr');
+
+                row.dataset.medicineId =
+                    medicineId;
+
+
+                row.innerHTML = `
+
+                    <td>
+                        <strong>
+                            ${medicineName}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${medicineStock}
+                    </td>
+
+                    <td>
+                        ₹${medicineRate.toFixed(2)}
+                    </td>
+
+                    <td>
+
+                        <button
+                            type="button"
+                            class="qty-minus"
+                        >
+                            −
+                        </button>
+
+                        <span class="qty-value">
+                            1
+                        </span>
+
+                        <button
+                            type="button"
+                            class="qty-plus"
+                        >
+                            +
+                        </button>
+
+                    </td>
+
+                    <td>
+                        ₹${medicineRate.toFixed(2)}
+                    </td>
+
+                    <td>
+
+                        <button
+                            type="button"
+                            class="remove-item-btn"
+                            title="Remove medicine"
+                        >
+                            🗑 Remove
+                        </button>
+
+                    </td>
+
+                `;
+
+
+                // =========================================
+                // ADD ROW TO BILL
+                // =========================================
+
+                billItemsBody.appendChild(row);
+
+
+                // =========================================
+                // UPDATE SUMMARY AFTER ADD
+                // =========================================
+
+                updateBillSummary();
+
+
+                // =========================================
+                // GET ROW CONTROLS
+                // =========================================
+
+                const minusButton =
+                    row.querySelector(
+                        '.qty-minus'
+                    );
+
+                const plusButton =
+                    row.querySelector(
+                        '.qty-plus'
+                    );
+
+                const qtyValue =
+                    row.querySelector(
+                        '.qty-value'
+                    );
+
+                const totalCell =
+                    row.children[4];
+
+                const removeButton =
+                    row.querySelector(
+                        '.remove-item-btn'
+                    );
+
+                let quantity = 1;
+
+
+                // =========================================
+                // INCREASE QUANTITY
+                // =========================================
+
+                plusButton.addEventListener(
+                    'click',
+                    function () {
+
+                        if (
+                            quantity <
+                            medicineStock
+                        ) {
+
+                            quantity++;
+
+
+                            // UPDATE QUANTITY
+
+                            qtyValue.textContent =
+                                quantity;
+
+
+                            // UPDATE LINE TOTAL
+
+                            totalCell.textContent =
+                                '₹' +
+                                (
+                                    medicineRate *
+                                    quantity
+                                ).toFixed(2);
+
+
+                            // UPDATE BILL TOTAL
+
+                            updateBillSummary();
+
+                        }
+
+                        else {
+
+                            alert(
+                                'Insufficient stock. Available quantity: ' +
+                                medicineStock
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                // =========================================
+                // DECREASE QUANTITY
+                // =========================================
+
+                minusButton.addEventListener(
+                    'click',
+                    function () {
+
+                        if (quantity > 1) {
+
+                            quantity--;
+
+
+                            // UPDATE QUANTITY
+
+                            qtyValue.textContent =
+                                quantity;
+
+
+                            // UPDATE LINE TOTAL
+
+                            totalCell.textContent =
+                                '₹' +
+                                (
+                                    medicineRate *
+                                    quantity
+                                ).toFixed(2);
+
+
+                            // UPDATE BILL TOTAL
+
+                            updateBillSummary();
+
+                        }
+
+                    }
+                );
+
+
+                // =========================================
+                // REMOVE MEDICINE
+                // =========================================
+
+                removeButton.addEventListener(
+                    'click',
+                    function () {
+
+                        row.remove();
+
+
+                        // UPDATE BILL TOTAL AFTER REMOVE
+
+                        updateBillSummary();
+
+                    }
+                );
+
+            }
+        );
+
+    });
+
+// =========================================
+// COMPLETE SALE
+// =========================================
+
+completeSaleBtn.addEventListener(
+    'click',
+    function () {
+
+        const billRows =
+            billItemsBody.querySelectorAll(
+                'tr[data-medicine-id]'
+            );
+
+
+        // =========================================
+        // CHECK BILL IS NOT EMPTY
+        // =========================================
+
+        if (billRows.length === 0) {
+
+            alert(
+                'Please add at least one medicine to the bill.'
+            );
+
+            return;
+        }
+
+
+        // =========================================
+        // PREPARE SALE ITEMS
+        // =========================================
+
+        const saleItems = [];
+
+        billRows.forEach(function (row) {
+
+            const medicineId =
+                row.dataset.medicineId;
+
+            const quantity =
+                parseInt(
+                    row.querySelector(
+                        '.qty-value'
+                    ).textContent
+                );
+
+            saleItems.push({
+                medicine_id: medicineId,
+                quantity: quantity
+            });
+
+        });
+
+
+        // =========================================
+        // STORE SALE DATA
+        // =========================================
+
+        saleItemsData.value =
+            JSON.stringify(saleItems);
+
+
+        // =========================================
+        // SUBMIT SALE FORM
+        // =========================================
+
+        const posSaleForm =
+            document.getElementById(
+                'posSaleForm'
+            );
+
+        posSaleForm.submit();
+
+    }
+);
+
+});
+
+</script>

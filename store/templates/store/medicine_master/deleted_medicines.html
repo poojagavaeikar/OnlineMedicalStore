@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Deleted Medicines | Pharmacy Admin Portal</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 245px;
+            height: 100vh;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            padding: 22px 15px;
+            overflow-y: auto;
+        }
+
+        .logo {
+            padding: 0 12px 25px;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .logo h2 {
+            color: #0f766e;
+            font-size: 23px;
+        }
+
+        .logo p {
+            color: #6b7280;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #9ca3af;
+            text-transform: uppercase;
+            padding: 0 12px;
+            margin: 18px 0 8px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 12px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 14px;
+        }
+
+        .menu-item:hover {
+            background: #f0fdfa;
+            color: #0f766e;
+        }
+
+        .menu-item.active {
+            background: #ccfbf1;
+            color: #0f766e;
+            font-weight: 600;
+        }
+
+        .menu-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 245px;
+            min-height: 100vh;
+        }
+
+        /* ================= TOPBAR ================= */
+
+        .topbar {
+            height: 75px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        .portal-title h3 {
+            font-size: 18px;
+            color: #111827;
+        }
+
+        .portal-title p {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 3px;
+        }
+
+        .admin-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .notification {
+            font-size: 20px;
+            color: #6b7280;
+        }
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: #0f766e;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .admin-text strong {
+            display: block;
+            font-size: 13px;
+            color: #111827;
+        }
+
+        .admin-text span {
+            display: block;
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            padding: 30px;
+        }
+
+        .breadcrumb {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            font-size: 26px;
+            color: #111827;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .back-btn {
+            background: #ffffff;
+            color: #0f766e;
+            border: 1px solid #0f766e;
+            padding: 10px 16px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #f0fdfa;
+        }
+
+        /* ================= INFO CARD ================= */
+
+        .trash-info {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 9px;
+            padding: 14px 16px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #9a3412;
+        }
+
+        .trash-info strong {
+            color: #7c2d12;
+        }
+
+        /* ================= TABLE ================= */
+
+        .table-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        .table-heading {
+            padding: 18px 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .table-heading h3 {
+            font-size: 15px;
+            color: #111827;
+        }
+
+        .table-heading p {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #6b7280;
+            font-size: 11px;
+            text-transform: uppercase;
+            padding: 13px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 14px 12px;
+            font-size: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .medicine-name {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .small-text {
+            color: #6b7280;
+        }
+
+        /* ================= BADGES ================= */
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .deleted-badge {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .stock-in {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .stock-low {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .stock-out {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        /* ================= RESTORE ================= */
+
+        .restore-btn {
+            display: inline-block;
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+            padding: 7px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .restore-btn:hover {
+            background: #d1fae5;
+        }
+
+        /* ================= EMPTY ================= */
+
+        .empty-message {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .empty-icon {
+            font-size: 35px;
+            margin-bottom: 12px;
+        }
+
+        .empty-message h3 {
+            color: #374151;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .empty-message p {
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        .footer {
+            text-align: center;
+            padding: 25px 0;
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+            <h2>MedCare</h2>
+            <p>Pharmacy Management</p>
+        </div>
+
+        <div class="menu-title">Main Menu</div>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🏠</span>
+            Dashboard
+        </a>
+
+        <a href="{% url 'medicine_list' %}" class="menu-item active">
+            <span class="menu-icon">💊</span>
+            Medicine Master
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">📁</span>
+            Categories
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🏭</span>
+            Manufacturers
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🚚</span>
+            Suppliers
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">📦</span>
+            Inventory
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🛒</span>
+            Purchase
+        </a>
+
+        <div class="menu-title">Operations</div>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">📋</span>
+            Prescriptions
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🛍️</span>
+            Online Orders
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">💳</span>
+            Walk-in POS
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🧾</span>
+            Sales &amp; Invoice
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🚴</span>
+            Delivery
+        </a>
+
+        <div class="menu-title">Management</div>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">💰</span>
+            Payments
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">📊</span>
+            Reports
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">⚙️</span>
+            Settings
+        </a>
+
+    </div>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="main">
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div class="portal-title">
+                <h3>Pharmacy Admin Portal</h3>
+                <p>Online Medical Store &amp; Pharmacy Management System</p>
+            </div>
+
+            <div class="admin-area">
+
+                <div class="notification">
+                    🔔
+                </div>
+
+                <div class="admin-info">
+
+                    <div class="avatar">
+                        PA
+                    </div>
+
+                    <div class="admin-text">
+                        <strong>Pharmacy Admin</strong>
+                        <span>Administrator</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <div class="content">
+
+            <div class="breadcrumb">
+                Pharmacy Admin / Medicine Master / Deleted Medicines
+            </div>
+
+            <div class="page-header">
+
+                <div>
+                    <h1>Deleted Medicines</h1>
+                    <p>View and restore medicines removed from Medicine Master</p>
+                </div>
+
+                <a href="{% url 'medicine_list' %}" class="back-btn">
+                    ← Back to Medicine Master
+                </a>
+
+            </div>
+
+
+            <!-- TRASH INFORMATION -->
+
+            <div class="trash-info">
+                🗑️ <strong>Trash:</strong>
+                Deleted medicines are kept here so they can be restored if required.
+            </div>
+
+
+            <!-- ================= DELETED MEDICINE TABLE ================= -->
+
+            <div class="table-card">
+
+                <div class="table-heading">
+                    <h3>Deleted Medicine List</h3>
+                    <p>Medicines currently available for recovery</p>
+                </div>
+
+                {% if medicines %}
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Medicine</th>
+                                <th>Generic</th>
+                                <th>Brand</th>
+                                <th>Category</th>
+                                <th>Manufacturer</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for medicine in medicines %}
+
+                                <tr>
+
+                                    <td>
+                                        <strong>
+                                            {{ medicine.medicine_id|default:"—" }}
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        <div class="medicine-name">
+                                            {{ medicine.name }}
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <span class="small-text">
+                                            {{ medicine.generic_name|default:"—" }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="small-text">
+                                            {{ medicine.brand|default:"—" }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="small-text">
+                                            {{ medicine.category|default:"—" }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="small-text">
+                                            {{ medicine.manufacturer|default:"—" }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+
+                                        {{ medicine.stock }}
+
+                                        {% if medicine.stock == 0 %}
+
+                                            <span class="badge stock-out">
+                                                Out of Stock
+                                            </span>
+
+                                        {% elif medicine.stock <= medicine.low_stock_limit %}
+
+                                            <span class="badge stock-low">
+                                                Low Stock
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="badge stock-in">
+                                                In Stock
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                    <td>
+                                        <span class="badge deleted-badge">
+                                            Deleted
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <a href="{% url 'restore_medicine' medicine.id %}"
+                                           class="restore-btn">
+                                            ↶ Restore
+                                        </a>
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                {% else %}
+
+                    <div class="empty-message">
+
+                        <div class="empty-icon">🗑️</div>
+
+                        <h3>Trash is empty</h3>
+
+                        <p>
+                            There are currently no deleted medicines to restore.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="footer">
+                Online Medical Store and Management System
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

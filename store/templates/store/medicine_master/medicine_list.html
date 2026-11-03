@@ -1,0 +1,959 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Medicine Master | Pharmacy Admin Portal</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 245px;
+            height: 100vh;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            padding: 22px 15px;
+            overflow-y: auto;
+        }
+
+        .logo {
+            padding: 0 12px 25px;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .logo h2 {
+            color: #0f766e;
+            font-size: 23px;
+        }
+
+        .logo p {
+            color: #6b7280;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #9ca3af;
+            text-transform: uppercase;
+            padding: 0 12px;
+            margin: 18px 0 8px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 12px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .menu-item:hover {
+            background: #f0fdfa;
+            color: #0f766e;
+        }
+
+        .menu-item.active {
+            background: #ccfbf1;
+            color: #0f766e;
+            font-weight: 600;
+        }
+
+        .menu-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 245px;
+            min-height: 100vh;
+        }
+
+        /* ================= TOPBAR ================= */
+
+        .topbar {
+            height: 75px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        .portal-title h3 {
+            font-size: 18px;
+            color: #111827;
+        }
+
+        .portal-title p {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 3px;
+        }
+
+        .admin-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .notification {
+            font-size: 20px;
+            color: #6b7280;
+            cursor: pointer;
+        }
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: #0f766e;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .admin-text strong {
+            display: block;
+            font-size: 13px;
+            color: #111827;
+        }
+
+        .admin-text span {
+            display: block;
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            padding: 30px;
+        }
+
+        .breadcrumb {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            font-size: 26px;
+            color: #111827;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .add-btn {
+            background: #0f766e;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .add-btn:hover {
+            background: #115e59;
+        }
+
+        /* ================= ALERT / UNDO ================= */
+
+        .undo-alert {
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            padding: 13px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #2e7d32;
+        }
+
+        .undo-alert a {
+            margin-left: 15px;
+            color: #166534;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .undo-alert a:hover {
+            text-decoration: underline;
+        }
+
+        /* ================= STAT CARDS ================= */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .card-value {
+            font-size: 27px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        /* ================= TABLE ================= */
+
+        .table-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1300px;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #6b7280;
+            font-size: 11px;
+            text-transform: uppercase;
+            padding: 13px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 14px 12px;
+            font-size: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .medicine-name {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .small-text {
+            color: #6b7280;
+        }
+
+
+        /* ================= MEDICINE LIST HEADING ================= */
+
+.table-heading {
+    padding: 18px 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.table-heading h3 {
+    font-size: 15px;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.table-heading p {
+    font-size: 12px;
+    color: #6b7280;
+}
+        /* ================= BADGES ================= */
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .rx-yes {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .rx-no {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .stock-in {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .stock-low {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .stock-out {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .status-active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-inactive {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        /* ================= ACTION BUTTONS ================= */
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.action-btn {
+    display: inline-block;
+    padding: 7px 11px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.view-btn {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.edit-btn {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.delete-btn {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.action-btn:hover {
+    opacity: 0.85;
+}
+        /* ================= EMPTY ================= */
+
+        .empty-message {
+            text-align: center;
+            padding: 35px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        .footer {
+            text-align: center;
+            padding: 25px 0;
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1100px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main {
+                margin-left: 200px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+
+/* ================= MEDICINE SEARCH ================= */
+
+.medicine-search {
+    padding: 15px 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.medicine-search form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.medicine-search input {
+    width: 320px;
+    padding: 9px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+}
+
+.medicine-search input:focus {
+    border-color: #2563eb;
+}
+
+.medicine-search button {
+    padding: 9px 16px;
+    border: none;
+    border-radius: 6px;
+    background: #2563eb;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.clear-search {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #f8fafc;
+    color: #374151;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.clear-search:hover {
+    background: #f1f5f9;
+    border-color: #9ca3af;
+    color: #111827;
+}
+
+    </style>
+</head>
+
+<body>
+
+   <!-- ================= SIDEBAR ================= -->
+
+{% include 'store/includes/sidebar.html' %}
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="main">
+
+        <!-- ================= TOPBAR ================= -->
+
+        <div class="topbar">
+
+            <div class="portal-title">
+                <h3>Pharmacy Admin Portal</h3>
+                <p>Online Medical Store &amp; Pharmacy Management System</p>
+            </div>
+
+            <div class="admin-area">
+
+                <div class="notification">
+                    🔔
+                </div>
+
+                <div class="admin-info">
+
+                    <div class="avatar">
+                        PA
+                    </div>
+
+                    <div class="admin-text">
+                        <strong>Pharmacy Admin</strong>
+                        <span>Administrator</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <div class="content">
+
+            <div class="breadcrumb">
+                Pharmacy Admin / Medicine Master
+            </div>
+
+
+            <!-- ================= UNDO MESSAGE ================= -->
+
+            {% if request.session.deleted_medicine_id %}
+
+                <div class="undo-alert">
+
+                    Medicine deleted successfully.
+
+                    <a href="{% url 'restore_medicine' request.session.deleted_medicine_id %}">
+                        Undo
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- ================= PAGE HEADER ================= -->
+
+<div class="page-header">
+
+    <div>
+        <h1>Medicine Master</h1>
+        <p>Complete medicine master data</p>
+    </div>
+
+    <div style="display: flex; gap: 10px;">
+
+        <a href="{% url 'deleted_medicines' %}"
+           style="
+               background: #ffffff;
+               color: #dc2626;
+               border: 1px solid #dc2626;
+               padding: 10px 16px;
+               border-radius: 7px;
+               text-decoration: none;
+               font-size: 13px;
+               font-weight: 600;
+           ">
+            🗑 Deleted Medicines
+        </a>
+
+        <a href="{% url 'add_medicine' %}" class="add-btn">
+            + Add Medicine
+        </a>
+
+    </div>
+
+</div>
+
+
+            <!-- ================= STAT CARDS ================= -->
+
+            <div class="cards">
+
+                <div class="card">
+                    <div class="card-title">Total Medicines</div>
+                    <div class="card-value">{{ total_medicines }}</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Active Medicines</div>
+                    <div class="card-value">{{ active_medicines }}</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Low Stock</div>
+                    <div class="card-value">{{ low_stock }}</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Expiring Soon</div>
+                    <div class="card-value">{{ expiring_soon }}</div>
+                </div>
+
+            </div>
+
+
+            <!-- ================= MEDICINE TABLE ================= -->
+
+<div class="table-card">
+
+    <!-- MEDICINE LIST HEADING -->
+
+
+    <div class="table-heading">
+        <h3>Medicine List</h3>
+        <p>View and manage all medicines available in Medicine Master</p>
+    </div>
+
+<div class="medicine-search">
+
+    <form method="GET">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search medicine..."
+            value="{{ request.GET.search }}"
+        >
+
+        <button type="submit">
+            Search
+        </button>
+
+        <select name="category">
+
+    <option value="">All Categories</option>
+
+    {% for category in categories %}
+        <option
+            value="{{ category }}"
+            {% if request.GET.category == category %}selected{% endif %}
+        >
+            {{ category }}
+        </option>
+    {% endfor %}
+
+</select>
+
+<select name="status">
+
+    <option value="">All Status</option>
+
+    <option value="Active"
+        {% if request.GET.status == "Active" %}selected{% endif %}>
+        Active
+    </option>
+
+    <option value="Inactive"
+        {% if request.GET.status == "Inactive" %}selected{% endif %}>
+        Inactive
+    </option>
+
+</select>
+
+<select name="stock">
+
+    <option value="">All Stock</option>
+
+    <option value="in_stock"
+        {% if request.GET.stock == "in_stock" %}selected{% endif %}>
+        In Stock
+    </option>
+
+    <option value="low_stock"
+        {% if request.GET.stock == "low_stock" %}selected{% endif %}>
+        Low Stock
+    </option>
+
+    <option value="out_of_stock"
+        {% if request.GET.stock == "out_of_stock" %}selected{% endif %}>
+        Out of Stock
+    </option>
+
+</select>
+
+<a href="{% url 'medicine_list' %}" class="clear-search">
+    Clear
+</a>
+
+    </form>
+
+   </div>
+
+     {% if medicines %}
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>ID</th>
+                <th>Medicine</th>
+                <th>Generic</th>
+                <th>Brand</th>
+                <th>Category</th>
+                <th>Manufacturer</th>
+                <th>MRP</th>
+                <th>Sell</th>
+                <th>Rx</th>
+                <th>Stock</th>
+                <th>Expiry</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+                <tbody>
+
+                            {% for medicine in medicines %}
+
+                                <tr>
+
+                                    <!-- ID -->
+                                    <td>
+                                        <strong>
+                                            {{ medicine.medicine_id|default:"—" }}
+                                        </strong>
+                                    </td>
+
+
+                                    <!-- MEDICINE -->
+                                    <td>
+                                        <div class="medicine-name">
+                                            {{ medicine.name }}
+                                        </div>
+                                    </td>
+
+
+                                    <!-- GENERIC -->
+                                    <td>
+                                        <span class="small-text">
+                                            {{ medicine.generic_name|default:"—" }}
+                                        </span>
+                                    </td>
+
+
+                                    <!-- BRAND -->
+                                    <td>
+                                        <span class="small-text">
+                                            {{ medicine.brand|default:"—" }}
+                                        </span>
+                                    </td>
+
+
+                                    <!-- CATEGORY -->
+                                    <td>
+                                        <span class="small-text">
+                                            {{ medicine.category|default:"—" }}
+                                        </span>
+                                    </td>
+
+
+                                    <!-- MANUFACTURER -->
+                                    <td>
+                                        <span class="small-text">
+                                            {{ medicine.manufacturer|default:"—" }}
+                                        </span>
+                                    </td>
+
+
+                                    <!-- MRP -->
+                                    <td>
+                                        ₹{{ medicine.mrp|default:"0" }}
+                                    </td>
+
+
+                                    <!-- SELLING RATE -->
+                                    <td>
+                                        ₹{{ medicine.selling_rate|default:"0" }}
+                                    </td>
+
+
+                                    <!-- RX -->
+                                    <td>
+
+                                        {% if medicine.prescription_required %}
+
+                                            <span class="badge rx-yes">
+                                                Yes
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="badge rx-no">
+                                                No
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- STOCK -->
+                                    <td>
+
+                                        {{ medicine.stock }}
+
+                                        {% if medicine.stock == 0 %}
+
+                                            <span class="badge stock-out">
+                                                Out of Stock
+                                            </span>
+
+                                        {% elif medicine.stock <= medicine.low_stock_limit %}
+
+                                            <span class="badge stock-low">
+                                                Low Stock
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="badge stock-in">
+                                                In Stock
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- EXPIRY -->
+                                    <td>
+                                        {{ medicine.expiry_date|date:"d M Y" }}
+                                    </td>
+
+
+                                    <!-- STATUS -->
+                                    <td>
+
+                                        {% if medicine.status == "Active" %}
+
+                                            <span class="badge status-active">
+                                                Active
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="badge status-inactive">
+                                                Inactive
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+          
+          
+                <!-- ================= ACTION BUTTONS ================= -->
+
+<td>
+    <div class="action-buttons">
+
+        <a
+            href="{% url 'view_medicine' medicine.id %}"
+            class="action-btn view-btn"
+        >
+            View
+        </a>
+
+        <a
+            href="{% url 'edit_medicine' medicine.id %}"
+            class="action-btn edit-btn"
+        >
+            Edit
+        </a>
+
+        <a
+            href="{% url 'delete_medicine' medicine.id %}"
+            class="action-btn delete-btn"
+        >
+            Delete
+        </a>
+
+    </div>
+</td> 
+    
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% else %}
+
+    <div class="empty-message">
+        No medicines available.
+    </div>
+
+{% endif %}
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<div class="footer">
+    Online Medical Store and Management System
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
+
+                                                             

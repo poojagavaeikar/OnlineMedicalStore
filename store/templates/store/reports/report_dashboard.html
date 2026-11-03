@@ -1,0 +1,384 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports | MedCare</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7f9;
+            color: #263238;
+        }
+
+
+        /* =========================================
+           SIDEBAR
+        ========================================= */
+
+        .sidebar {
+            width: 245px;
+            height: 100vh;
+            background: #ffffff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 24px 16px;
+            overflow-y: auto;
+            border-right: 1px solid #e8eef1;
+            z-index: 1000;
+        }
+
+        .sidebar .brand {
+            padding: 0 10px 22px;
+        }
+
+        .sidebar .brand h2 {
+            color: #009688;
+            font-size: 24px;
+            margin-bottom: 3px;
+        }
+
+        .sidebar .brand p {
+            color: #90a4ae;
+            font-size: 12px;
+        }
+
+        .sidebar .menu-title {
+            color: #90a4ae;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin: 18px 10px 8px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 12px;
+            margin-bottom: 4px;
+            border-radius: 7px;
+            color: #546e7a;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            background: #e0f2f1;
+            color: #00796b;
+        }
+
+        .sidebar a.active {
+            background: #e0f2f1;
+            color: #00796b;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+           MAIN CONTENT
+        ========================================= */
+
+        .main-content {
+            margin-left: 245px;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+
+        /* =========================================
+           PAGE HEADER
+        ========================================= */
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            font-size: 27px;
+            margin-bottom: 6px;
+        }
+
+        .page-header p {
+            color: #78909c;
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           REPORT CARDS
+        ========================================= */
+
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .report-card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 22px;
+            border: 1px solid #edf1f3;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .report-icon {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .report-card h3 {
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .report-card p {
+            color: #78909c;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .report-btn {
+            display: inline-block;
+            background: #e0f2f1;
+            color: #00796b;
+            text-decoration: none;
+            padding: 8px 13px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .report-btn:hover {
+            background: #009688;
+            color: #ffffff;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 1100px) {
+
+            .report-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 768px) {
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .report-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         COMMON SIDEBAR
+    ========================================== -->
+
+    {% include 'store/includes/sidebar.html' %}
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    <main class="main-content">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+            <h1>📊 Reports</h1>
+
+            <p>
+                View and analyze pharmacy business reports.
+            </p>
+
+        </div>
+
+
+       <!-- =========================================
+     REPORT OPTIONS
+========================================== -->
+
+<div class="report-grid">
+
+
+    <!-- SALES REPORT -->
+
+    <div class="report-card">
+
+        <div class="report-icon">🧾</div>
+
+        <h3>Sales Report</h3>
+
+        <p>
+            View walk-in sales, revenue and invoice
+            information by date.
+        </p>
+
+        <a
+            href="{% url 'sales_report' %}"
+            class="report-btn"
+        >
+            View Report
+        </a>
+
+    </div>
+
+
+    <!-- ONLINE ORDERS REPORT -->
+
+    <div class="report-card">
+
+        <div class="report-icon">🛍️</div>
+
+        <h3>Online Orders Report</h3>
+
+        <p>
+            Analyze online orders, order status and
+            customer order activity.
+        </p>
+
+        <a
+            href="{% url 'online_orders_report' %}"
+            class="report-btn"
+        >
+            View Report
+        </a>
+
+    </div>
+
+
+    <!-- PURCHASE REPORT -->
+
+    <div class="report-card">
+
+        <div class="report-icon">🛒</div>
+
+        <h3>Purchase Report</h3>
+
+        <p>
+            Review medicine purchases and supplier
+            purchase records.
+        </p>
+
+        <a
+            href="{% url 'purchase_report' %}"
+            class="report-btn"
+        >
+            View Report
+        </a>
+
+    </div>
+
+
+    <!-- PAYMENT REPORT -->
+
+    <div class="report-card">
+
+        <div class="report-icon">💰</div>
+
+        <h3>Payment Report</h3>
+
+        <p>
+            Track received, pending and failed
+            pharmacy payments.
+        </p>
+
+        <a
+    href="{% url 'payment_report' %}"
+    class="report-btn"
+>
+    View Report
+</a>
+
+    </div>
+
+
+    <!-- INVENTORY REPORT -->
+
+    <div class="report-card">
+
+        <div class="report-icon">📦</div>
+
+        <h3>Inventory Report</h3>
+
+        <p>
+            View current medicine stock, low stock
+            and inventory information.
+        </p>
+
+        <a
+    href="{% url 'inventory_report' %}"
+    class="report-btn"
+>
+    View Report
+</a>    
+
+    </div>
+
+
+    <!-- EXPIRY REPORT -->
+
+    <div class="report-card">
+
+        <div class="report-icon">⚠️</div>
+
+        <h3>Expiry Report</h3>
+
+        <p>
+            View expired and soon-to-expire
+            medicines.
+        </p>
+
+        <a
+    href="{% url 'expiry_report' %}"
+    class="report-btn"
+>
+    View Report
+</a>
+    </div>
+
+
+</div>
+
+</main>
+
+</body>
+
+</html>

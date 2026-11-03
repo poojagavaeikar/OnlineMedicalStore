@@ -1,0 +1,427 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Medicine | MedCare</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .topbar {
+            background: white;
+            padding: 20px 35px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .topbar h2 {
+            color: #0f766e;
+        }
+
+        .topbar p {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        a {
+            color: #0f766e;
+            text-decoration: none;
+        }
+
+        .heading {
+            margin-bottom: 22px;
+        }
+
+        .heading h1 {
+            font-size: 27px;
+            margin-bottom: 7px;
+        }
+
+        .heading p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 18px 22px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #fcfdfd;
+        }
+
+        .card-header h3 {
+            font-size: 16px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 24px;
+            padding: 24px;
+        }
+
+        .detail {
+            min-width: 0;
+        }
+
+        .detail label {
+            display: block;
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .detail p {
+            font-size: 14px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .stock-low {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .stock-in {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .stock-out {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 20px 24px;
+            background: #fcfdfd;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 11px 18px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-primary {
+            background: #0f766e;
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        @media (max-width: 700px) {
+            .details-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 450px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <h2>MedCare</h2>
+    <p>Pharmacy Management | Online Medical Store and Management System</p>
+</header>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="{% url 'medicine_list' %}">Medicine Master</a>
+        / View Medicine
+    </div>
+
+    <div class="heading">
+        <h1>{{ medicine.name }}</h1>
+        <p>Complete medicine information and inventory details.</p>
+    </div>
+
+    <section class="card">
+        <div class="card-header">
+            <h3>Basic Information</h3>
+        </div>
+
+        <div class="details-grid">
+            <div class="detail">
+                <label>Medicine ID</label>
+                <p>{{ medicine.medicine_id|default:"-" }}</p>
+            </div>
+
+            <div class="detail">
+                <label>Medicine Name</label>
+                <p>{{ medicine.name }}</p>
+            </div>
+
+            <div class="detail">
+                <label>Generic / Salt</label>
+                <p>{{ medicine.generic_name|default:"-" }}</p>
+            </div>
+
+            <div class="detail">
+                <label>Brand</label>
+                <p>{{ medicine.brand|default:"-" }}</p>
+            </div>
+
+            <div class="detail">
+                <label>Category</label>
+                <p>{{ medicine.category|default:"-" }}</p>
+            </div>
+
+            <div class="detail">
+                <label>Manufacturer</label>
+                <p>{{ medicine.manufacturer|default:"-" }}</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <div class="card-header">
+            <h3>Packaging & Tax Information</h3>
+        </div>
+
+        <div class="details-grid">
+            <div class="detail">
+                <label>Pack Size</label>
+                <p>{{ medicine.pack_size|default:"-" }}</p>
+            </div>
+
+            <div class="detail">
+                <label>Unit</label>
+                <p>{{ medicine.unit|default:"-" }}</p>
+            </div>
+
+            <div class="detail">
+                <label>HSN Code</label>
+                <p>{{ medicine.hsn|default:"-" }}</p>
+            </div>
+
+            <div class="detail">
+                <label>GST</label>
+                <p>
+                    {% if medicine.gst != None %}
+                        {{ medicine.gst }}%
+                    {% else %}
+                        -
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="detail">
+                <label>Barcode</label>
+                <p>{{ medicine.barcode|default:"-" }}</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <div class="card-header">
+            <h3>Pricing Information</h3>
+        </div>
+
+        <div class="details-grid">
+            <div class="detail">
+                <label>MRP</label>
+                <p>
+                    {% if medicine.mrp != None %}
+                        ₹{{ medicine.mrp }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="detail">
+                <label>Purchase Rate</label>
+                <p>
+                    {% if medicine.purchase_rate != None %}
+                        ₹{{ medicine.purchase_rate }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="detail">
+                <label>Selling Rate</label>
+                <p>
+                    {% if medicine.selling_rate != None %}
+                        ₹{{ medicine.selling_rate }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <div class="card-header">
+            <h3>Prescription Information</h3>
+        </div>
+
+        <div class="details-grid">
+            <div class="detail">
+                <label>Prescription Required</label>
+                <p>
+                    {% if medicine.prescription_required %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="detail">
+                <label>Schedule</label>
+                <p>{{ medicine.schedule|default:"-" }}</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <div class="card-header">
+            <h3>Inventory & Expiry</h3>
+        </div>
+
+        <div class="details-grid">
+            <div class="detail">
+                <label>Current Stock</label>
+                <p>{{ medicine.stock }}</p>
+            </div>
+
+            <div class="detail">
+                <label>Low Stock Limit</label>
+                <p>{{ medicine.low_stock_limit }}</p>
+            </div>
+
+            <div class="detail">
+                <label>Stock Status</label>
+                <p>
+                    {% if medicine.stock == 0 %}
+                        <span class="badge stock-out">Out of Stock</span>
+                    {% elif medicine.stock <= medicine.low_stock_limit %}
+                        <span class="badge stock-low">Low Stock</span>
+                    {% else %}
+                        <span class="badge stock-in">In Stock</span>
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="detail">
+                <label>Expiry Date</label>
+                <p>{{ medicine.expiry_date|date:"d M Y" }}</p>
+            </div>
+
+            <div class="detail">
+                <label>Medicine Status</label>
+                <p>
+                    {% if medicine.status == "Active" %}
+                        <span class="badge active">Active</span>
+                    {% else %}
+                        <span class="badge inactive">Inactive</span>
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="detail">
+                <label>Description</label>
+                <p>{{ medicine.description|default:"-" }}</p>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a href="{% url 'medicine_list' %}" class="btn btn-secondary">
+                Back to Medicine Master
+            </a>
+
+            <a href="{% url 'edit_medicine' medicine.id %}" class="btn btn-primary">
+                Edit Medicine
+            </a>
+        </div>
+    </section>
+
+    
+    <div class="footer">
+        Online Medical Store and Management System
+    </div>
+
+</main>
+
+</body>
+</html>
+```

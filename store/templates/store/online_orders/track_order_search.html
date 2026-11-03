@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Track Order | MedCare</title>
+
+
+    <style>
+
+        /* =========================================
+           PAGE
+        ========================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7f9;
+            color: #333;
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================== */
+
+        .header {
+            background: white;
+            padding: 18px 40px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .logo {
+            margin: 0;
+            color: #159c8c;
+            font-size: 28px;
+        }
+
+        .logo-text {
+            margin-top: 3px;
+            color: #777;
+            font-size: 13px;
+        }
+
+
+        /* =========================================
+           PAGE CONTAINER
+        ========================================== */
+
+        .container {
+            max-width: 650px;
+            margin: 55px auto;
+            padding: 0 20px;
+        }
+
+
+        /* =========================================
+           PAGE TITLE
+        ========================================== */
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            margin: 0 0 10px;
+            color: #222;
+            font-size: 30px;
+        }
+
+        .page-title p {
+            margin: 0;
+            color: #777;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+
+        /* =========================================
+           TRACK ORDER CARD
+        ========================================== */
+
+        .track-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .track-card h2 {
+            margin-top: 0;
+            margin-bottom: 22px;
+            padding-bottom: 13px;
+            border-bottom: 1px solid #eee;
+            font-size: 19px;
+            color: #222;
+        }
+
+
+        /* =========================================
+           FORM
+        ========================================== */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #d9d9d9;
+            border-radius: 7px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: #159c8c;
+            box-shadow: 0 0 0 3px rgba(21, 156, 140, 0.08);
+        }
+
+        .form-input::placeholder {
+            color: #aaa;
+        }
+
+
+        /* =========================================
+           ERROR MESSAGE
+        ========================================== */
+
+        .error-message {
+            background: #fff0f0;
+            color: #c0392b;
+            padding: 12px 14px;
+            border-radius: 7px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           TRACK BUTTON
+        ========================================== */
+
+        .track-btn {
+            width: 100%;
+            background: #159c8c;
+            color: white;
+            border: none;
+            padding: 13px 20px;
+            border-radius: 7px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .track-btn:hover {
+            opacity: 0.9;
+        }
+
+
+        /* =========================================
+           HELP TEXT
+        ========================================== */
+
+        .help-text {
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #888;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================== */
+
+        @media (max-width: 650px) {
+
+            .header {
+                padding: 16px 20px;
+            }
+
+            .container {
+                margin: 35px auto;
+            }
+
+            .track-card {
+                padding: 22px;
+            }
+
+            .page-title h1 {
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <div class="header">
+
+        <h2 class="logo">
+            MedCare
+        </h2>
+
+        <div class="logo-text">
+            Online Medical Store
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         PAGE CONTENT
+    ========================================== -->
+
+    <div class="container">
+
+
+        <!-- =========================================
+             PAGE TITLE
+        ========================================== -->
+
+        <div class="page-title">
+
+            <h1>
+                Track Your Order
+            </h1>
+
+            <p>
+                Enter your Order ID and registered phone number
+                to check the latest status of your order.
+            </p>
+
+        </div>
+
+
+        <!-- =========================================
+             TRACK ORDER CARD
+        ========================================== -->
+
+        <div class="track-card">
+
+            <h2>
+                Order Tracking
+            </h2>
+
+
+            <!-- =========================================
+                 ERROR MESSAGE
+            ========================================== -->
+
+            {% if error %}
+
+                <div class="error-message">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            <!-- =========================================
+                 TRACK ORDER FORM
+            ========================================== -->
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <!-- =========================================
+                     ORDER ID
+                ========================================== -->
+
+                <div class="form-group">
+
+                    <label
+                        for="order_id"
+                        class="form-label"
+                    >
+                        Order ID
+                    </label>
+
+                    <input
+                        type="text"
+                        id="order_id"
+                        name="order_id"
+                        class="form-input"
+                        placeholder="Example: ORD006"
+                        value="{{ order_id|default:'' }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- =========================================
+                     REGISTERED PHONE NUMBER
+                ========================================== -->
+
+                <div class="form-group">
+
+                    <label
+                        for="phone"
+                        class="form-label"
+                    >
+                        Registered Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        class="form-input"
+                        placeholder="Enter registered phone number"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- =========================================
+                     TRACK BUTTON
+                ========================================== -->
+
+                <button
+                    type="submit"
+                    class="track-btn"
+                >
+                    Track Order
+                </button>
+
+            </form>
+
+
+            <!-- =========================================
+                 HELP TEXT
+            ========================================== -->
+
+            <div class="help-text">
+                Please use the same phone number that was
+                provided while placing your order.
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

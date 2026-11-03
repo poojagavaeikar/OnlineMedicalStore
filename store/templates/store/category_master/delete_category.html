@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delete Category | Pharmacy Admin Portal</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 245px;
+            height: 100vh;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            padding: 22px 15px;
+            overflow-y: auto;
+        }
+
+        .logo {
+            padding: 0 12px 25px;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .logo h2 {
+            color: #0f766e;
+            font-size: 23px;
+        }
+
+        .logo p {
+            color: #6b7280;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #9ca3af;
+            text-transform: uppercase;
+            padding: 0 12px;
+            margin: 18px 0 8px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 12px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 14px;
+        }
+
+        .menu-item:hover {
+            background: #f0fdfa;
+            color: #0f766e;
+        }
+
+        .menu-item.active {
+            background: #ccfbf1;
+            color: #0f766e;
+            font-weight: 600;
+        }
+
+        .menu-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 245px;
+            min-height: 100vh;
+        }
+
+        /* ================= TOPBAR ================= */
+
+        .topbar {
+            height: 75px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        .portal-title h3 {
+            font-size: 18px;
+            color: #111827;
+        }
+
+        .portal-title p {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 3px;
+        }
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: #0f766e;
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .admin-text strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .admin-text span {
+            display: block;
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            padding: 30px;
+        }
+
+        .breadcrumb {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            font-size: 26px;
+            color: #111827;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        /* ================= DELETE CARD ================= */
+
+        .delete-card {
+            max-width: 650px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .delete-heading {
+            padding: 20px 22px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .delete-heading h3 {
+            color: #b91c1c;
+            font-size: 17px;
+            margin-bottom: 5px;
+        }
+
+        .delete-heading p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .delete-body {
+            padding: 25px 22px;
+        }
+
+        .warning-box {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 22px;
+            color: #991b1b;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .category-details {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 22px;
+        }
+
+        .detail-row {
+            display: flex;
+            padding: 13px 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            width: 150px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .detail-value {
+            color: #111827;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .delete-btn {
+            border: none;
+            background: #dc2626;
+            color: #ffffff;
+            padding: 10px 18px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #b91c1c;
+        }
+
+        .cancel-btn {
+            background: #ffffff;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            padding: 10px 18px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .cancel-btn:hover {
+            background: #f8fafc;
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+            <h2>MedCare</h2>
+            <p>Pharmacy Management</p>
+        </div>
+
+        <div class="menu-title">Main Menu</div>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🏠</span>
+            Dashboard
+        </a>
+
+        <a href="{% url 'medicine_list' %}" class="menu-item">
+            <span class="menu-icon">💊</span>
+            Medicine Master
+        </a>
+
+        <a href="{% url 'category_list' %}" class="menu-item active">
+            <span class="menu-icon">📁</span>
+            Categories
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🏭</span>
+            Manufacturers
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🚚</span>
+            Suppliers
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">📦</span>
+            Inventory
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🛒</span>
+            Purchase
+        </a>
+
+        <div class="menu-title">Operations</div>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">📋</span>
+            Prescriptions
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🛍️</span>
+            Online Orders
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">💳</span>
+            Walk-in POS
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🧾</span>
+            Sales &amp; Invoice
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">🚴</span>
+            Delivery
+        </a>
+
+        <div class="menu-title">Management</div>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">💰</span>
+            Payments
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">📊</span>
+            Reports
+        </a>
+
+        <a href="#" class="menu-item">
+            <span class="menu-icon">⚙️</span>
+            Settings
+        </a>
+
+    </div>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="main">
+
+        <div class="topbar">
+
+            <div class="portal-title">
+                <h3>Pharmacy Admin Portal</h3>
+                <p>Online Medical Store &amp; Pharmacy Management System</p>
+            </div>
+
+            <div class="admin-info">
+
+                <div class="avatar">
+                    PA
+                </div>
+
+                <div class="admin-text">
+                    <strong>Pharmacy Admin</strong>
+                    <span>Administrator</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <div class="content">
+
+            <div class="breadcrumb">
+                Pharmacy Admin / Category Master / Delete Category
+            </div>
+
+            <div class="page-header">
+
+                <h1>Delete Category</h1>
+
+                <p>
+                    Confirm before removing this category
+                </p>
+
+            </div>
+
+
+            <div class="delete-card">
+
+                <div class="delete-heading">
+
+                    <h3>Delete Confirmation</h3>
+
+                    <p>
+                        Please review the category before deleting it.
+                    </p>
+
+                </div>
+
+
+                <div class="delete-body">
+
+                    <div class="warning-box">
+                        Are you sure you want to delete
+                        <strong>{{ category.name }}</strong>?
+                        The category will be moved out of the active Category List.
+                    </div>
+
+
+                    <div class="category-details">
+
+                        <div class="detail-row">
+
+                            <div class="detail-label">
+                                Category ID
+                            </div>
+
+                            <div class="detail-value">
+                                {{ category.category_id }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-row">
+
+                            <div class="detail-label">
+                                Category Name
+                            </div>
+
+                            <div class="detail-value">
+                                {{ category.name }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-row">
+
+                            <div class="detail-label">
+                                Status
+                            </div>
+
+                            <div class="detail-value">
+                                {{ category.status }}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <div class="actions">
+
+                            <button
+                                type="submit"
+                                class="delete-btn"
+                            >
+                                Delete Category
+                            </button>
+
+                            <a
+                                href="{% url 'category_list' %}"
+                                class="cancel-btn"
+                            >
+                                Cancel
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

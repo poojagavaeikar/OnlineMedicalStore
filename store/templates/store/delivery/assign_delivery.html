@@ -1,0 +1,592 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Assign Delivery | MedCare</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f8fa;
+            color: #37474f;
+        }
+
+
+        /* =========================================
+           SIDEBAR
+        ========================================== */
+
+        .sidebar {
+            width: 245px;
+            height: 100vh;
+            background: #ffffff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 24px 16px;
+            overflow-y: auto;
+            border-right: 1px solid #e8eef1;
+            z-index: 1000;
+        }
+
+        .sidebar .brand {
+            padding: 0 10px 22px;
+        }
+
+        .sidebar .brand h2 {
+            color: #009688;
+            font-size: 24px;
+            margin-bottom: 3px;
+        }
+
+        .sidebar .brand p {
+            color: #90a4ae;
+            font-size: 12px;
+        }
+
+        .sidebar .menu-title {
+            color: #90a4ae;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin: 18px 10px 8px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 12px;
+            margin-bottom: 4px;
+            border-radius: 7px;
+            color: #546e7a;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            background: #e0f2f1;
+            color: #00796b;
+        }
+
+
+        /* =========================================
+           MAIN CONTENT
+        ========================================== */
+
+        .main-content {
+            margin-left: 245px;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+
+        /* =========================================
+           PAGE HEADER
+        ========================================== */
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            font-size: 26px;
+            color: #263238;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            color: #78909c;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #ffffff;
+            color: #546e7a;
+            border: 1px solid #cfd8dc;
+            padding: 10px 15px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #eceff1;
+        }
+
+
+        /* =========================================
+           ORDER INFORMATION
+        ========================================== */
+
+        .order-card {
+            background: #ffffff;
+            border: 1px solid #e5ecef;
+            border-radius: 10px;
+            padding: 22px;
+            margin-bottom: 22px;
+        }
+
+        .order-card h3 {
+            font-size: 17px;
+            color: #37474f;
+            margin-bottom: 18px;
+        }
+
+        .order-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #90a4ae;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 14px;
+            color: #37474f;
+            line-height: 1.5;
+        }
+
+        .order-id {
+            color: #00796b;
+            font-weight: 700;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+           ASSIGN DELIVERY FORM
+        ========================================== */
+
+        .form-card {
+            background: #ffffff;
+            border: 1px solid #e5ecef;
+            border-radius: 10px;
+            padding: 22px;
+        }
+
+        .form-card h3 {
+            font-size: 17px;
+            color: #37474f;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #455a64;
+        }
+
+        .required {
+            color: #d32f2f;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #cfd8dc;
+            border-radius: 7px;
+            outline: none;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            color: #37474f;
+            background: #ffffff;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #009688;
+            box-shadow: 0 0 0 2px rgba(0, 150, 136, 0.08);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .assign-btn {
+            background: #009688;
+            color: #ffffff;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .assign-btn:hover {
+            background: #00796b;
+        }
+
+        .cancel-btn {
+            text-decoration: none;
+            background: #eceff1;
+            color: #546e7a;
+            padding: 11px 18px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .order-grid,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width {
+                grid-column: auto;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <!-- =========================================
+         COMMON SIDEBAR
+    ========================================== -->
+
+    {% include 'store/includes/sidebar.html' %}
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    <main class="main-content">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+            <div>
+
+                <h1>Assign Delivery</h1>
+
+                <p>
+                    Assign a delivery person to this shipped order
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'delivery_list' %}"
+                class="back-btn"
+            >
+                ← Back to Deliveries
+            </a>
+
+        </div>
+
+
+        <!-- =========================================
+             ORDER INFORMATION
+        ========================================== -->
+
+        <div class="order-card">
+
+            <h3>Order Information</h3>
+
+            <div class="order-grid">
+
+
+                <div>
+
+                    <div class="info-label">
+                        Order ID
+                    </div>
+
+                    <div class="info-value order-id">
+                        {{ order.order_id }}
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="info-label">
+                        Customer
+                    </div>
+
+                    <div class="info-value">
+                        {{ order.customer_name }}
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="info-label">
+                        Phone
+                    </div>
+
+                    <div class="info-value">
+                        {{ order.phone }}
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="info-label">
+                        Order Status
+                    </div>
+
+                    <div class="info-value">
+
+                        <span class="status-badge">
+                            {{ order.status }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="info-label">
+                        Expected Delivery
+                    </div>
+
+                    <div class="info-value">
+
+                        {% if order.expected_delivery_date %}
+
+                            {{ order.expected_delivery_date|date:"d M Y" }}
+
+                        {% else %}
+
+                            Not set
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="info-label">
+                        Pincode
+                    </div>
+
+                    <div class="info-value">
+                        {{ order.delivery_pincode|default:"-" }}
+                    </div>
+
+                </div>
+
+
+                <div style="grid-column: 1 / -1;">
+
+                    <div class="info-label">
+                        Delivery Address
+                    </div>
+
+                    <div class="info-value">
+                        {{ order.delivery_address }}
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             DELIVERY PERSON FORM
+        ========================================== -->
+
+        <div class="form-card">
+
+            <h3>Delivery Person Details</h3>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="form-grid">
+
+
+                    <!-- DELIVERY PERSON NAME -->
+
+                    <div class="form-group">
+
+                        <label for="delivery_person_name">
+                            Delivery Person Name
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="delivery_person_name"
+                            name="delivery_person_name"
+                            placeholder="Enter delivery person name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- DELIVERY PERSON PHONE -->
+
+                    <div class="form-group">
+
+                        <label for="delivery_person_phone">
+                            Delivery Person Phone
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="delivery_person_phone"
+                            name="delivery_person_phone"
+                            placeholder="Enter phone number"
+                            maxlength="15"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- NOTES -->
+
+                    <div class="form-group full-width">
+
+                        <label for="notes">
+                            Delivery Notes
+                        </label>
+
+                        <textarea
+                            id="notes"
+                            name="notes"
+                            placeholder="Add delivery instructions or notes (optional)"
+                        ></textarea>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- FORM ACTIONS -->
+
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="assign-btn"
+                    >
+                        🚚 Assign Delivery
+                    </button>
+
+                    <a
+                        href="{% url 'delivery_list' %}"
+                        class="cancel-btn"
+                    >
+                        Cancel
+                    </a>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+
+    </main>
+
+
+</body>
+
+</html>

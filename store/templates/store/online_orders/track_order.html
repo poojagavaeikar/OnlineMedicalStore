@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Track Order | MedCare</title>
+
+
+    <style>
+
+        /* =========================================
+           PAGE
+        ========================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7f9;
+            color: #333;
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================== */
+
+        .header {
+            background: white;
+            padding: 18px 40px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .logo {
+            margin: 0;
+            color: #159c8c;
+            font-size: 28px;
+        }
+
+        .logo-text {
+            margin-top: 3px;
+            color: #777;
+            font-size: 13px;
+        }
+
+
+        /* =========================================
+           PAGE CONTAINER
+        ========================================== */
+
+        .container {
+            max-width: 950px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+
+        /* =========================================
+           PAGE TITLE
+        ========================================== */
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            margin-bottom: 8px;
+            color: #222;
+        }
+
+        .page-title p {
+            color: #777;
+            margin: 0;
+        }
+
+
+        /* =========================================
+           CARD
+        ========================================== */
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 19px;
+            color: #222;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 12px;
+        }
+
+
+        /* =========================================
+           ORDER INFORMATION
+        ========================================== */
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+        }
+
+        .detail-label {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 6px;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+
+        /* =========================================
+           STATUS BADGE
+        ========================================== */
+
+        .status-badge {
+            display: inline-block;
+            padding: 7px 13px;
+            border-radius: 20px;
+            background: #e8f7f4;
+            color: #118575;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+
+        /* =========================================
+           VERIFICATION FORM
+        ========================================== */
+
+        .verify-card {
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d9d9d9;
+            border-radius: 7px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #159c8c;
+        }
+
+        .verify-btn {
+            background: #159c8c;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .verify-btn:hover {
+            opacity: 0.9;
+        }
+
+
+        /* =========================================
+           FORM ERROR
+        ========================================== */
+
+        .form-error {
+            background: #fff0f0;
+            color: #c0392b;
+            padding: 12px 14px;
+            border-radius: 7px;
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           TRACKING TIMELINE
+        ========================================== */
+
+        .tracking {
+            margin-top: 25px;
+        }
+
+        .track-step {
+            display: flex;
+            position: relative;
+            min-height: 85px;
+        }
+
+        .track-left {
+            width: 45px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .track-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #ddd;
+            border: 4px solid #f1f1f1;
+            z-index: 2;
+        }
+
+        .track-line {
+            position: absolute;
+            top: 24px;
+            bottom: 0;
+            width: 3px;
+            background: #ddd;
+        }
+
+        .track-step.completed .track-circle {
+            background: #159c8c;
+        }
+
+        .track-step.completed .track-line {
+            background: #159c8c;
+        }
+
+        .track-content {
+            padding-left: 12px;
+            padding-bottom: 25px;
+        }
+
+        .track-title {
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .track-date {
+            color: #888;
+            font-size: 13px;
+        }
+
+
+        /* =========================================
+           CANCELLED ORDER
+        ========================================== */
+
+        .cancelled-box {
+            background: #fff0f0;
+            color: #c0392b;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+
+        /* =========================================
+           ORDER NOT FOUND
+        ========================================== */
+
+        .error-box {
+            background: white;
+            max-width: 600px;
+            margin: 70px auto;
+            padding: 35px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .error-box h2 {
+            color: #c0392b;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================== */
+
+        @media (max-width: 650px) {
+
+            .header {
+                padding: 16px 20px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                margin-top: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <div class="header">
+
+        <h2 class="logo">
+            MedCare
+        </h2>
+
+        <div class="logo-text">
+            Online Medical Store
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         ORDER NOT FOUND
+    ========================================== -->
+
+    {% if not order %}
+
+        <div class="error-box">
+
+            <h2>
+                Order Not Found
+            </h2>
+
+            <p>
+                {% if error %}
+                    {{ error }}
+                {% else %}
+                    Please check your Order ID.
+                {% endif %}
+            </p>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- =========================================
+         CUSTOMER PHONE VERIFICATION
+    ========================================== -->
+
+    {% if order and not verified %}
+
+        <div class="container">
+
+            <div class="page-title">
+
+                <h1>
+                    Track Your Order
+                </h1>
+
+                <p>
+                    Verify your phone number to view order tracking.
+                </p>
+
+            </div>
+
+
+            <div class="card verify-card">
+
+                <h2>
+                    Verify Order
+                </h2>
+
+
+                <!-- =========================================
+                     ORDER ID
+                ========================================== -->
+
+                <div class="form-group">
+
+                    <div class="detail-label">
+                        Order ID
+                    </div>
+
+                    <div class="detail-value">
+                        {{ order.order_id }}
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     PHONE VERIFICATION FORM
+                ========================================== -->
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <div class="form-group">
+
+                        <label
+                            for="phone"
+                            class="form-label"
+                        >
+                            Registered Phone Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            class="form-input"
+                            placeholder="Enter registered phone number"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- =========================================
+                         VERIFICATION ERROR
+                    ========================================== -->
+
+                    {% if error %}
+
+                        <div class="form-error">
+                            {{ error }}
+                        </div>
+
+                    {% endif %}
+
+
+                    <button
+                        type="submit"
+                        class="verify-btn"
+                    >
+                        Verify &amp; Track Order
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- =========================================
+         VERIFIED CUSTOMER - ORDER DETAILS
+    ========================================== -->
+
+    {% if order and verified %}
+
+        <div class="container">
+
+
+            <!-- =========================================
+                 PAGE TITLE
+            ========================================== -->
+
+            <div class="page-title">
+
+                <h1>
+                    Track Your Order
+                </h1>
+
+                <p>
+                    Follow the latest status of your MedCare order.
+                </p>
+
+            </div>
+
+
+            <!-- =========================================
+                 ORDER DETAILS
+            ========================================== -->
+
+            <div class="card">
+
+                <h2>
+                    Order Details
+                </h2>
+
+                <div class="details-grid">
+
+
+                    <!-- =========================================
+                         ORDER ID
+                    ========================================== -->
+
+                    <div>
+
+                        <div class="detail-label">
+                            Order ID
+                        </div>
+
+                        <div class="detail-value">
+                            {{ order.order_id }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- =========================================
+                         CUSTOMER
+                    ========================================== -->
+
+                    <div>
+
+                        <div class="detail-label">
+                            Customer
+                        </div>
+
+                        <div class="detail-value">
+                            {{ order.customer_name }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- =========================================
+                         ORDER STATUS
+                    ========================================== -->
+
+                    <div>
+
+                        <div class="detail-label">
+                            Order Status
+                        </div>
+
+                        <div class="detail-value">
+
+                            <span class="status-badge">
+                                {{ order.status }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =========================================
+                         EXPECTED DELIVERY
+                    ========================================== -->
+
+                    <div>
+
+                        <div class="detail-label">
+                            Expected Delivery
+                        </div>
+
+                        <div class="detail-value">
+
+                            {% if order.expected_delivery_date %}
+
+                                {{ order.expected_delivery_date|date:"d M Y" }}
+
+                            {% else %}
+
+                                Not available
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =========================================
+                         PAYMENT METHOD
+                    ========================================== -->
+
+                    <div>
+
+                        <div class="detail-label">
+                            Payment Method
+                        </div>
+
+                        <div class="detail-value">
+                            {{ order.get_payment_method_display }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- =========================================
+                         PAYMENT STATUS
+                    ========================================== -->
+
+                    <div>
+
+                        <div class="detail-label">
+                            Payment Status
+                        </div>
+
+                        <div class="detail-value">
+                            {{ order.payment_status }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- =========================================
+                         ORDER TOTAL
+                    ========================================== -->
+
+                    <div>
+
+                        <div class="detail-label">
+                            Order Total
+                        </div>
+
+                        <div class="detail-value">
+                            ₹{{ order.total_amount }}
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================================
+                 CANCELLED ORDER
+            ========================================== -->
+
+            {% if order.status == 'Cancelled' %}
+
+                <div class="cancelled-box">
+                    This order has been cancelled.
+                </div>
+
+            {% endif %}
+
+
+            <!-- =========================================
+                 ORDER TRACKING
+            ========================================== -->
+
+            {% if order.status != 'Cancelled' %}
+
+                <div class="card">
+
+                    <h2>
+                        Order Tracking
+                    </h2>
+
+                    <div class="tracking">
+
+
+                        <!-- =========================================
+                             CONFIRMED
+                        ========================================== -->
+
+                        <div class="track-step {% if order.confirmed_at %}completed{% endif %}">
+
+                            <div class="track-left">
+
+                                <div class="track-circle"></div>
+                                <div class="track-line"></div>
+
+                            </div>
+
+                            <div class="track-content">
+
+                                <div class="track-title">
+                                    Order Confirmed
+                                </div>
+
+                                <div class="track-date">
+
+                                    {% if order.confirmed_at %}
+
+                                        {{ order.confirmed_at|date:"d M Y, h:i A" }}
+
+                                    {% else %}
+
+                                        Waiting for confirmation
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =========================================
+                             PACKED
+                        ========================================== -->
+
+                        <div class="track-step {% if order.packed_at %}completed{% endif %}">
+
+                            <div class="track-left">
+
+                                <div class="track-circle"></div>
+                                <div class="track-line"></div>
+
+                            </div>
+
+                            <div class="track-content">
+
+                                <div class="track-title">
+                                    Packed
+                                </div>
+
+                                <div class="track-date">
+
+                                    {% if order.packed_at %}
+
+                                        {{ order.packed_at|date:"d M Y, h:i A" }}
+
+                                    {% else %}
+
+                                        Waiting
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =========================================
+                             SHIPPED
+                        ========================================== -->
+
+                        <div class="track-step {% if order.shipped_at %}completed{% endif %}">
+
+                            <div class="track-left">
+
+                                <div class="track-circle"></div>
+                                <div class="track-line"></div>
+
+                            </div>
+
+                            <div class="track-content">
+
+                                <div class="track-title">
+                                    Shipped
+                                </div>
+
+                                <div class="track-date">
+
+                                    {% if order.shipped_at %}
+
+                                        {{ order.shipped_at|date:"d M Y, h:i A" }}
+
+                                    {% else %}
+
+                                        Waiting
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =========================================
+                             OUT FOR DELIVERY
+                        ========================================== -->
+
+                        <div class="track-step {% if order.out_for_delivery_at %}completed{% endif %}">
+
+                            <div class="track-left">
+
+                                <div class="track-circle"></div>
+                                <div class="track-line"></div>
+
+                            </div>
+
+                            <div class="track-content">
+
+                                <div class="track-title">
+                                    Out for Delivery
+                                </div>
+
+                                <div class="track-date">
+
+                                    {% if order.out_for_delivery_at %}
+
+                                        {{ order.out_for_delivery_at|date:"d M Y, h:i A" }}
+
+                                    {% else %}
+
+                                        Waiting
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =========================================
+                             DELIVERED
+                        ========================================== -->
+
+                        <div class="track-step {% if order.delivered_at %}completed{% endif %}">
+
+                            <div class="track-left">
+
+                                <div class="track-circle"></div>
+
+                            </div>
+
+                            <div class="track-content">
+
+                                <div class="track-title">
+                                    Delivered
+                                </div>
+
+                                <div class="track-date">
+
+                                    {% if order.delivered_at %}
+
+                                        {{ order.delivered_at|date:"d M Y, h:i A" }}
+
+                                    {% else %}
+
+                                        Waiting
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+
+        </div>
+
+    {% endif %}
+
+
+</body>
+
+</html>

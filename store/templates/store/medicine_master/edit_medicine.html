@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Medicine | MedCare Pharmacy</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .topbar {
+            background: #fff;
+            padding: 20px 35px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .topbar h2 {
+            color: #0f766e;
+            font-size: 23px;
+        }
+
+        .topbar p {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .breadcrumb {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: #0f766e;
+            text-decoration: none;
+        }
+
+        .page-heading {
+            margin-bottom: 22px;
+        }
+
+        .page-heading h1 {
+            font-size: 27px;
+            margin-bottom: 6px;
+            color: #111827;
+        }
+
+        .page-heading p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            overflow: hidden;
+        }
+
+        .card-heading {
+            padding: 18px 22px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #fcfdfd;
+        }
+
+        .card-heading h3 {
+            font-size: 16px;
+            color: #111827;
+        }
+
+        .card-heading p {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            padding: 11px 12px;
+            font-size: 13px;
+            color: #1f2937;
+            background: #fff;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #0f766e;
+            box-shadow: 0 0 0 2px #ccfbf1;
+        }
+
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #0f766e;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 95px;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 40px;
+        }
+
+        .checkbox-row label {
+            font-weight: 500;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 20px 24px;
+            background: #fcfdfd;
+        }
+
+        .btn {
+            display: inline-block;
+            border: none;
+            border-radius: 7px;
+            padding: 11px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #0f766e;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #115e59;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .error-box {
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+            font-size: 13px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        @media (max-width: 750px) {
+            .form-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 500px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 12px;
+            }
+
+            .card-body {
+                padding: 18px;
+            }
+
+            .form-actions {
+                padding: 16px;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <h2>MedCare</h2>
+    <p>Pharmacy Management | Online Medical Store and Management System</p>
+</header>
+
+<main class="container">
+
+    <div class="breadcrumb">
+        <a href="{% url 'medicine_list' %}">Medicine Master</a>
+        / Edit Medicine
+    </div>
+
+    <div class="page-heading">
+        <h1>Edit Medicine</h1>
+        <p>Update medicine details, pricing, stock and expiry information.</p>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="error-box">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    {% if form.errors %}
+        <div class="error-box">
+            Please correct the following errors:
+            {{ form.errors }}
+        </div>
+    {% endif %}
+
+    <form method="POST" action="{% url 'edit_medicine' medicine.id %}">
+        {% csrf_token %}
+
+        <!-- BASIC INFORMATION -->
+
+        <section class="card">
+            <div class="card-heading">
+                <h3>Basic Information</h3>
+                <p>Medicine identification, name and brand details.</p>
+            </div>
+
+            <div class="card-body">
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="medicine_id">Medicine ID</label>
+                        <input
+                            type="text"
+                            id="medicine_id"
+                            name="medicine_id"
+                            value="{{ medicine.medicine_id|default:'' }}"
+                            placeholder="e.g. MED006"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Medicine Name <span class="required">*</span></label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value="{{ medicine.name }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="generic_name">Generic / Salt</label>
+                        <input
+                            type="text"
+                            id="generic_name"
+                            name="generic_name"
+                            value="{{ medicine.generic_name|default:'' }}"
+                            placeholder="Generic name"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="brand">Brand</label>
+                        <input
+                            type="text"
+                            id="brand"
+                            name="brand"
+                            value="{{ medicine.brand|default:'' }}"
+                            placeholder="Brand name"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <input
+                            type="text"
+                            id="category"
+                            name="category"
+                            value="{{ medicine.category|default:'' }}"
+                            placeholder="e.g. Antibiotics"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="manufacturer">Manufacturer <span class="required">*</span></label>
+                        <input
+                            type="text"
+                            id="manufacturer"
+                            name="manufacturer"
+                            value="{{ medicine.manufacturer }}"
+                            required
+                        >
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- PACKING AND TAX -->
+
+        <section class="card">
+            <div class="card-heading">
+                <h3>Packaging & Tax Information</h3>
+                <p>Packaging, units and tax details.</p>
+            </div>
+
+            <div class="card-body">
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="pack_size">Pack Size</label>
+                        <input
+                            type="number"
+                            id="pack_size"
+                            name="pack_size"
+                            min="1"
+                            value="{{ medicine.pack_size|default:'' }}"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="unit">Unit</label>
+                        <select id="unit" name="unit">
+                            <option value="">Select Unit</option>
+                            <option value="Tablets" {% if medicine.unit == "Tablets" %}selected{% endif %}>Tablets</option>
+                            <option value="Capsules" {% if medicine.unit == "Capsules" %}selected{% endif %}>Capsules</option>
+                            <option value="Bottle" {% if medicine.unit == "Bottle" %}selected{% endif %}>Bottle</option>
+                            <option value="Strip" {% if medicine.unit == "Strip" %}selected{% endif %}>Strip</option>
+                            <option value="Syrup" {% if medicine.unit == "Syrup" %}selected{% endif %}>Syrup</option>
+                            <option value="Injection" {% if medicine.unit == "Injection" %}selected{% endif %}>Injection</option>
+                            <option value="Tube" {% if medicine.unit == "Tube" %}selected{% endif %}>Tube</option>
+                            <option value="Pieces" {% if medicine.unit == "Pieces" %}selected{% endif %}>Pieces</option>
+                            <option value="Other" {% if medicine.unit == "Other" %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hsn">HSN Code</label>
+                        <input
+                            type="text"
+                            id="hsn"
+                            name="hsn"
+                            value="{{ medicine.hsn|default:'' }}"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gst">GST (%)</label>
+                        <input
+                            type="number"
+                            id="gst"
+                            name="gst"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            value="{{ medicine.gst|default_if_none:'' }}"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="barcode">Barcode</label>
+                        <input
+                            type="text"
+                            id="barcode"
+                            name="barcode"
+                            value="{{ medicine.barcode|default:'' }}"
+                        >
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- PRICING -->
+
+        <section class="card">
+            <div class="card-heading">
+                <h3>Pricing Information</h3>
+                <p>Enter prices in Indian Rupees.</p>
+            </div>
+
+            <div class="card-body">
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="mrp">MRP (₹)</label>
+                        <input
+                            type="number"
+                            id="mrp"
+                            name="mrp"
+                            min="0"
+                            step="0.01"
+                            value="{{ medicine.mrp|default_if_none:'' }}"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="purchase_rate">Purchase Rate (₹)</label>
+                        <input
+                            type="number"
+                            id="purchase_rate"
+                            name="purchase_rate"
+                            min="0"
+                            step="0.01"
+                            value="{{ medicine.purchase_rate|default_if_none:'' }}"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selling_rate">Selling Rate (₹)</label>
+                        <input
+                            type="number"
+                            id="selling_rate"
+                            name="selling_rate"
+                            min="0"
+                            step="0.01"
+                            value="{{ medicine.selling_rate|default_if_none:'' }}"
+                        >
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- PRESCRIPTION -->
+
+        <section class="card">
+            <div class="card-heading">
+                <h3>Prescription Information</h3>
+                <p>Prescription requirement and schedule.</p>
+            </div>
+
+            <div class="card-body">
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Prescription Required?</label>
+
+                        <div class="checkbox-row">
+                            <input
+                                type="checkbox"
+                                id="prescription_required"
+                                name="prescription_required"
+                                value="on"
+                                {% if medicine.prescription_required %}checked{% endif %}
+                            >
+
+                            <label for="prescription_required">
+                                Yes, prescription is required
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="schedule">Schedule</label>
+                        <select id="schedule" name="schedule">
+                            <option value="">Select Schedule</option>
+                            <option value="H" {% if medicine.schedule == "H" %}selected{% endif %}>Schedule H</option>
+                            <option value="H1" {% if medicine.schedule == "H1" %}selected{% endif %}>Schedule H1</option>
+                            <option value="X" {% if medicine.schedule == "X" %}selected{% endif %}>Schedule X</option>
+                            <option value="Other" {% if medicine.schedule == "Other" %}selected{% endif %}>Other</option>
+                            <option value="Not Applicable" {% if medicine.schedule == "Not Applicable" %}selected{% endif %}>Not Applicable</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- STOCK AND EXPIRY -->
+
+        <section class="card">
+            <div class="card-heading">
+                <h3>Inventory & Expiry</h3>
+                <p>Current stock, expiry date and medicine status.</p>
+            </div>
+
+            <div class="card-body">
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="stock">Stock <span class="required">*</span></label>
+                        <input
+                            type="number"
+                            id="stock"
+                            name="stock"
+                            min="0"
+                            value="{{ medicine.stock }}"
+                            required
+                        >
+                    </div>
+
+                    
+<div class="form-group">
+    <label for="low_stock_limit">Low Stock Limit</label>
+    <input
+        type="number"
+        id="low_stock_limit"
+        name="low_stock_limit"
+        min="0"
+        value="{{ medicine.low_stock_limit }}"
+    >
+    <span class="help-text">
+        Stock this quantity or below will be shown as Low Stock.
+    </span>
+  </div>
+
+
+         <div class="form-group">
+                        <label for="expiry_date">Expiry Date <span class="required">*</span></label>
+                        <input
+                            type="date"
+                            id="expiry_date"
+                            name="expiry_date"
+                            value="{{ medicine.expiry_date|date:'Y-m-d' }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Medicine Status</label>
+                        <select id="status" name="status">
+                            <option value="Active" {% if medicine.status == "Active" %}selected{% endif %}>Active</option>
+                            <option value="Inactive" {% if medicine.status == "Inactive" %}selected{% endif %}>Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="description">Description</label>
+                        <textarea
+                            id="description"
+                            name="description"
+                            placeholder="Medicine description or additional notes..."
+                        >{{ medicine.description|default:'' }}</textarea>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- BUTTONS -->
+
+        <section class="card">
+            <div class="form-actions">
+
+                <a href="{% url 'medicine_list' %}" class="btn btn-secondary">
+                    Cancel
+                </a>
+
+                <button type="reset" class="btn btn-secondary">
+                    Reset
+                </button>
+
+                <button type="submit" class="btn btn-primary">
+                    Update Medicine
+                </button>
+
+            </div>
+        </section>
+
+    </form>
+
+    <div class="footer">
+        Online Medical Store and Management System
+    </div>
+
+</main>
+
+</body>
+</html>

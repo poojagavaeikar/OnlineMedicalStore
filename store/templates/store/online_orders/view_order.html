@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ order.order_id }} | MedCare</title>
+
+    <style>
+
+        /* =========================================
+           PAGE RESET
+        ========================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7f9;
+            color: #263238;
+        }
+
+
+        /* =========================================
+           SIDEBAR
+        ========================================= */
+        .sidebar {
+            width: 245px;
+            height: 100vh;
+            background: #ffffff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 24px 16px;
+            overflow-y: auto;
+            border-right: 1px solid #e8eef1;
+            z-index: 1000;
+        }
+
+        .sidebar .logo {
+            padding: 0 10px 22px;
+        }
+
+        .sidebar .logo h2 {
+            color: #009688;
+            font-size: 24px;
+            margin-bottom: 3px;
+        }
+
+        .sidebar .logo p {
+            color: #90a4ae;
+            font-size: 12px;
+        }
+
+        .sidebar .menu-title {
+            color: #90a4ae;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin: 18px 10px 8px;
+        }
+
+        .sidebar .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 12px;
+            margin-bottom: 4px;
+            border-radius: 7px;
+            color: #546e7a;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar .menu-item:hover {
+            background: #e0f2f1;
+            color: #00796b;
+        }
+
+
+        /* =========================================
+           MAIN CONTENT
+        ========================================= */
+        .main-content {
+            margin-left: 245px;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+
+        /* =========================================
+           PAGE HEADER
+        ========================================= */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            font-size: 27px;
+            margin-bottom: 6px;
+        }
+
+        .page-header p {
+            color: #78909c;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #ffffff;
+            color: #546e7a;
+            border: 1px solid #dce4e8;
+            padding: 10px 16px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+           ORDER STATUS
+        ========================================= */
+        .status-box {
+            background: #ffffff;
+            padding: 18px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-label {
+            color: #78909c;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .confirmed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .packed {
+            background: #e2e3f3;
+            color: #454d8c;
+        }
+
+        .shipped {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .out-delivery {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        .delivered,
+        .paid {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .cancelled,
+        .failed,
+        .refunded {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .payment-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+/* =========================================
+   ORDER ACTION BUTTON
+========================================= */
+.confirm-btn {
+    border: none;
+    background: #009688;
+    color: #ffffff;
+    padding: 10px 18px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.confirm-btn:hover {
+    background: #00796b;
+}
+
+
+
+/* =========================================
+   CANCEL ORDER BUTTON
+========================================= */
+.cancel-btn {
+    border: none;
+    background: #dc3545;
+    color: #ffffff;
+    padding: 10px 18px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.cancel-btn:hover {
+    background: #b52a37;
+    transform: translateY(-1px);
+}
+
+.cancel-btn:active {
+    transform: translateY(0);
+}
+
+
+ /* =========================================
+   ORDER TRACKING TIMELINE
+========================================= */
+.tracking-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.tracking-card h2 {
+    font-size: 17px;
+    margin-bottom: 25px;
+}
+
+.tracking-timeline {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: relative;
+}
+
+.tracking-step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+}
+
+.tracking-step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    width: 100%;
+    height: 3px;
+    background: #e0e6e9;
+    z-index: 1;
+}
+
+.tracking-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #e0e6e9;
+    color: #78909c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    font-size: 16px;
+    font-weight: 700;
+    position: relative;
+    z-index: 2;
+}
+
+.tracking-step.completed .tracking-circle {
+    background: #009688;
+    color: #ffffff;
+}
+
+.tracking-step.completed:not(:last-child)::after {
+    background: #009688;
+}
+
+.tracking-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #455a64;
+    margin-bottom: 5px;
+}
+
+.tracking-time {
+    font-size: 11px;
+    color: #90a4ae;
+    line-height: 1.4;
+}
+
+        /* =========================================
+           DETAILS GRID
+        ========================================= */
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .detail-card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 22px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .detail-card h2 {
+            font-size: 17px;
+            margin-bottom: 20px;
+        }
+
+        .detail-row {
+            margin-bottom: 15px;
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #90a4ae;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            color: #37474f;
+            line-height: 1.5;
+        }
+
+
+        /* =========================================
+           ORDER ITEMS
+        ========================================= */
+        .items-card {
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .items-header {
+            padding: 20px;
+            border-bottom: 1px solid #edf1f3;
+        }
+
+        .items-header h2 {
+            font-size: 17px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            background: #f8fafb;
+            color: #607d8b;
+            padding: 13px 16px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 15px 16px;
+            border-top: 1px solid #edf1f3;
+            font-size: 14px;
+        }
+
+        .medicine-name {
+            font-weight: 600;
+        }
+
+        .medicine-id {
+            color: #90a4ae;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .total-row td {
+            font-weight: 700;
+            background: #fafcfc;
+        }
+
+
+        /* =========================================
+           NOTES
+        ========================================= */
+        .notes-card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 22px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .notes-card h2 {
+            font-size: 17px;
+            margin-bottom: 12px;
+        }
+
+        .notes-card p {
+            color: #607d8b;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+        @media (max-width: 900px) {
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================
+         COMMON SIDEBAR
+    ========================================== -->
+    {% include 'store/includes/sidebar.html' %}
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+    <main class="main-content">
+
+
+        <!-- =========================================
+             PAGE HEADER
+        ========================================== -->
+        <div class="page-header">
+
+            <div>
+                <h1>Order Details</h1>
+
+                <p>
+                    Order {{ order.order_id }}
+                </p>
+            </div>
+
+            <a href="{% url 'order_list' %}" class="back-btn">
+                ← Back to Orders
+            </a>
+
+        </div>
+
+                <!-- =========================================
+             ORDER STATUS
+        ========================================== -->
+        <div class="status-box">
+
+            <!-- =========================================
+                 CURRENT ORDER STATUS
+            ========================================== -->
+            <div>
+
+                <div class="status-label">
+                    Order Status
+                </div>
+
+                {% if order.status == 'Confirmed' %}
+
+                    <span class="badge confirmed">
+                        Confirmed
+                    </span>
+
+                {% elif order.status == 'Packed' %}
+
+                    <span class="badge packed">
+                        Packed
+                    </span>
+
+                {% elif order.status == 'Shipped' %}
+
+                    <span class="badge shipped">
+                        Shipped
+                    </span>
+
+                {% elif order.status == 'Out for Delivery' %}
+
+                    <span class="badge out-delivery">
+                        Out for Delivery
+                    </span>
+
+                {% elif order.status == 'Delivered' %}
+
+                    <span class="badge delivered">
+                        Delivered
+                    </span>
+
+                {% elif order.status == 'Cancelled' %}
+
+                    <span class="badge cancelled">
+                        Cancelled
+                    </span>
+
+                {% else %}
+
+                    <span class="badge pending">
+                        Pending
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- =========================================
+                 CONFIRM ORDER BUTTON
+            ========================================== -->
+            {% if order.status == 'Pending' %}
+
+                <form
+                    method="POST"
+                    action="{% url 'confirm_order' order.id %}"
+                    style="margin: 0;"
+                >
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="confirm-btn"
+                    >
+                        ✓ Confirm Order
+                    </button>
+
+                </form>
+
+            {% endif %}
+
+<!-- =========================================
+     EDIT ORDER BUTTON
+========================================== -->
+{% if order.status == 'Pending' or order.status == 'Confirmed' or order.status == 'Packed' %}
+
+    <a
+        href="{% url 'edit_order' order.id %}"
+        class="confirm-btn"
+        style="text-decoration: none;"
+    >
+        ✏️ Edit Order
+    </a>
+
+{% endif %}
+
+<!-- =========================================
+     PACK ORDER BUTTON
+========================================== -->
+{% if order.status == 'Confirmed' %}
+
+    <form
+        method="POST"
+        action="{% url 'pack_order' order.id %}"
+        style="margin: 0;"
+    >
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="confirm-btn"
+        >
+            📦 Pack Order
+        </button>
+
+    </form>
+
+{% endif %}
+
+
+<!-- =========================================
+     SHIP ORDER BUTTON
+========================================== -->
+{% if order.status == 'Packed' %}
+
+    <form
+        method="POST"
+        action="{% url 'ship_order' order.id %}"
+        style="margin: 0;"
+    >
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="confirm-btn"
+        >
+            🚚 Ship Order
+        </button>
+
+    </form>
+
+{% endif %}
+
+<!-- =========================================
+     OUT FOR DELIVERY BUTTON
+========================================== -->
+{% if order.status == 'Shipped' %}
+
+    <form
+        method="POST"
+        action="{% url 'out_for_delivery_order' order.id %}"
+        style="margin: 0;"
+    >
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="confirm-btn"
+        >
+            🛵 Out for Delivery
+        </button>
+
+    </form>
+
+{% endif %}
+
+
+<!-- =========================================
+     DELIVER ORDER BUTTON
+========================================== -->
+{% if order.status == 'Out for Delivery' %}
+
+    <form
+        method="POST"
+        action="{% url 'deliver_order' order.id %}"
+        style="margin: 0;"
+    >
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="confirm-btn"
+        >
+            ✓ Mark Delivered
+        </button>
+
+    </form>
+
+{% endif %}
+
+
+
+    <!-- =========================================
+     CANCEL ORDER BUTTON
+========================================== -->
+{% if order.status == 'Pending' or order.status == 'Confirmed' or order.status == 'Packed' %}
+
+    <form
+        method="POST"
+        action="{% url 'cancel_order' order.id %}"
+        style="margin: 0;"
+    >
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="cancel-btn"
+        >
+            ✕ Cancel Order
+        </button>
+
+    </form>
+
+{% endif %}
+
+            <!-- =========================================
+                 ORDER DATE
+            ========================================== -->
+            <div>
+
+                <div class="status-label">
+                    Order Date
+                </div>
+
+                <strong>
+                    {{ order.order_date|date:"d M Y, h:i A" }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    
+        <!-- =========================================
+             ORDER TRACKING TIMELINE
+        ========================================== -->
+        {% if order.status != 'Pending' and order.status != 'Cancelled' %}
+
+        <div class="tracking-card">
+
+            <h2>Order Tracking</h2>
+
+            <div class="tracking-timeline">
+
+                <!-- =========================================
+                     CONFIRMED
+                ========================================== -->
+                <div class="tracking-step completed">
+
+                    <div class="tracking-circle">✓</div>
+
+                    <div class="tracking-title">
+                        Confirmed
+                    </div>
+
+                    <div class="tracking-time">
+                        {% if order.confirmed_at %}
+                            {{ order.confirmed_at|date:"d M Y" }}<br>
+                            {{ order.confirmed_at|date:"h:i A" }}
+                        {% else %}
+                            Completed
+                        {% endif %}
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     PACKED
+                ========================================== -->
+                <div class="tracking-step {% if order.packed_at %}completed{% endif %}">
+
+                    <div class="tracking-circle">
+                        {% if order.packed_at %}✓{% else %}2{% endif %}
+                    </div>
+
+                    <div class="tracking-title">
+                        Packed
+                    </div>
+
+                    <div class="tracking-time">
+                        {% if order.packed_at %}
+                            {{ order.packed_at|date:"d M Y" }}<br>
+                            {{ order.packed_at|date:"h:i A" }}
+                        {% else %}
+                            Pending
+                        {% endif %}
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     SHIPPED
+                ========================================== -->
+                <div class="tracking-step {% if order.shipped_at %}completed{% endif %}">
+
+                    <div class="tracking-circle">
+                        {% if order.shipped_at %}✓{% else %}3{% endif %}
+                    </div>
+
+                    <div class="tracking-title">
+                        Shipped
+                    </div>
+
+                    <div class="tracking-time">
+                        {% if order.shipped_at %}
+                            {{ order.shipped_at|date:"d M Y" }}<br>
+                            {{ order.shipped_at|date:"h:i A" }}
+                        {% else %}
+                            Pending
+                        {% endif %}
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     OUT FOR DELIVERY
+                ========================================== -->
+                <div class="tracking-step {% if order.out_for_delivery_at %}completed{% endif %}">
+
+                    <div class="tracking-circle">
+                        {% if order.out_for_delivery_at %}✓{% else %}4{% endif %}
+                    </div>
+
+                    <div class="tracking-title">
+                        Out for Delivery
+                    </div>
+
+                    <div class="tracking-time">
+                        {% if order.out_for_delivery_at %}
+                            {{ order.out_for_delivery_at|date:"d M Y" }}<br>
+                            {{ order.out_for_delivery_at|date:"h:i A" }}
+                        {% else %}
+                            Pending
+                        {% endif %}
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     DELIVERED
+                ========================================== -->
+                <div class="tracking-step {% if order.delivered_at %}completed{% endif %}">
+
+                    <div class="tracking-circle">
+                        {% if order.delivered_at %}✓{% else %}5{% endif %}
+                    </div>
+
+                    <div class="tracking-title">
+                        Delivered
+                    </div>
+
+                    <div class="tracking-time">
+                        {% if order.delivered_at %}
+                            {{ order.delivered_at|date:"d M Y" }}<br>
+                            {{ order.delivered_at|date:"h:i A" }}
+                        {% else %}
+                            Pending
+                        {% endif %}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+
+        <!-- =========================================
+             CUSTOMER + PAYMENT DETAILS
+        ========================================== -->
+        <div class="details-grid">
+
+
+            <!-- =========================================
+                 CUSTOMER DETAILS
+            ========================================== -->
+            <div class="detail-card">
+
+                <h2>Customer Details</h2>
+
+                <div class="detail-row">
+                    <div class="detail-label">
+                        Customer Name
+                    </div>
+
+                    <div class="detail-value">
+                        {{ order.customer_name }}
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">
+                        Phone
+                    </div>
+
+                    <div class="detail-value">
+                        {{ order.phone }}
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">
+                        Email
+                    </div>
+
+                    <div class="detail-value">
+                        {{ order.email|default:"-" }}
+                    </div>
+                </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">
+                        Delivery Address
+                    </div>
+
+                    <div class="detail-value">
+                        {{ order.delivery_address }}
+                    </div>
+                </div>
+   
+                <!-- =========================================
+                     DELIVERY PIN CODE
+                ========================================== -->
+                <div class="detail-row">
+                    <div class="detail-label">
+                        PIN Code
+                    </div>
+
+                    <div class="detail-value">
+                        {{ order.delivery_pincode|default:"-" }}
+                    </div>
+                </div>
+
+       
+                                <!-- =========================================
+                     EXPECTED DELIVERY DATE
+                ========================================== -->
+                <div class="detail-row">
+                    <div class="detail-label">
+                        Expected Delivery
+                    </div>
+
+                    <div class="detail-value">
+                        {% if order.expected_delivery_date %}
+                            {{ order.expected_delivery_date|date:"d M Y" }}
+                        {% else %}
+                            Not calculated
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        
+
+
+                        <!-- =========================================
+                 PAYMENT DETAILS
+            ========================================== -->
+            <div class="detail-card">
+
+                <h2>Payment Details</h2>
+
+                <!-- =========================================
+                     PAYMENT METHOD
+                ========================================== -->
+                <div class="detail-row">
+
+                    <div class="detail-label">
+                        Payment Method
+                    </div>
+
+                    <div class="detail-value">
+                        {{ order.get_payment_method_display }}
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     PAYMENT STATUS
+                ========================================== -->
+                <div class="detail-row">
+
+                    <div class="detail-label">
+                        Payment Status
+                    </div>
+
+                    <div class="detail-value">
+
+                        {% if order.payment_status == 'Paid' %}
+
+                            <span class="badge paid">
+                                Paid
+                            </span>
+
+                        {% elif order.payment_status == 'Failed' %}
+
+                            <span class="badge failed">
+                                Failed
+                            </span>
+
+                        {% elif order.payment_status == 'Refunded' %}
+
+                            <span class="badge refunded">
+                                Refunded
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge payment-pending">
+                                Pending
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     ONLINE PAYMENT INFORMATION
+                ========================================== -->
+                {% if order.payment_method == 'Online' and order.payment_status == 'Pending' %}
+
+                    <div class="detail-row">
+
+                        <div class="detail-label">
+                            Online Payment
+                        </div>
+
+                        <div class="detail-value">
+                            <span class="badge payment-pending">
+                                Awaiting Payment
+                            </span>
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- =========================================
+                     COD PAYMENT RECEIVED BUTTON
+                ========================================== -->
+                {% if order.payment_method == 'COD' and order.status == 'Delivered' and order.payment_status == 'Pending' %}
+
+                    <div class="detail-row">
+
+                        <form
+                            method="POST"
+                            action="{% url 'mark_payment_received' order.id %}"
+                        >
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="confirm-btn"
+                            >
+                                💰 Mark Payment Received
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- =========================================
+                     ORDER TOTAL
+                ========================================== -->
+                <div class="detail-row">
+
+                    <div class="detail-label">
+                        Order Total
+                    </div>
+
+                    <div class="detail-value">
+                        <strong>₹{{ order.total_amount }}</strong>
+                    </div>
+
+                </div>
+
+            </div>
+        <!-- =========================================
+             ORDERED MEDICINES
+        ========================================== -->
+        <div class="items-card">
+
+            <div class="items-header">
+                <h2>Ordered Medicines</h2>
+            </div>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Medicine</th>
+                        <th>Quantity</th>
+                        <th>Selling Rate</th>
+                        <th>Line Total</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for item in order.items.all %}
+
+                        <tr>
+
+                            <td>
+                                {{ forloop.counter }}
+                            </td>
+
+                            <td>
+                                <div class="medicine-name">
+                                    {{ item.medicine.name }}
+                                </div>
+
+                                <div class="medicine-id">
+                                    {{ item.medicine.medicine_id }}
+                                </div>
+                            </td>
+
+                            <td>
+                                {{ item.quantity }}
+                            </td>
+
+                            <td>
+                                ₹{{ item.selling_rate }}
+                            </td>
+
+                            <td>
+                                ₹{{ item.line_total }}
+                            </td>
+
+                        </tr>
+
+                    {% empty %}
+
+                        <tr>
+                            <td
+                                colspan="5"
+                                style="text-align:center; color:#90a4ae;"
+                            >
+                                No medicines found in this order.
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+
+                    <tr class="total-row">
+
+                        <td
+                            colspan="4"
+                            style="text-align:right;"
+                        >
+                            Order Total
+                        </td>
+
+                        <td>
+                            ₹{{ order.total_amount }}
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- =========================================
+             ORDER NOTES
+        ========================================== -->
+        <div class="notes-card">
+
+            <h2>Order Notes</h2>
+
+            <p>
+
+                {% if order.notes %}
+
+                    {{ order.notes }}
+
+                {% else %}
+
+                    No notes added for this order.
+
+                {% endif %}
+            </p>
+
+        </div>
+
+
+    </main>
+
+</body>
+</html>
+        

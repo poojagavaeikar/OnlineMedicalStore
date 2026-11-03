@@ -1,0 +1,632 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sales & Invoice | MedCare</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f8fa;
+            color: #37474f;
+        }
+
+
+        /* =========================================
+           SIDEBAR
+        ========================================== */
+
+        .sidebar {
+            width: 245px;
+            height: 100vh;
+            background: #ffffff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 24px 16px;
+            overflow-y: auto;
+            border-right: 1px solid #e8eef1;
+            z-index: 1000;
+        }
+
+        .sidebar .brand {
+            padding: 0 10px 22px;
+        }
+
+        .sidebar .brand h2 {
+            color: #009688;
+            font-size: 24px;
+            margin-bottom: 3px;
+        }
+
+        .sidebar .brand p {
+            color: #90a4ae;
+            font-size: 12px;
+        }
+
+        .sidebar .menu-title {
+            color: #90a4ae;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin: 18px 10px 8px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 12px;
+            margin-bottom: 4px;
+            border-radius: 7px;
+            color: #546e7a;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            background: #e0f2f1;
+            color: #00796b;
+        }
+
+        .sidebar a.active {
+            background: #e0f2f1;
+            color: #00796b;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+           MAIN CONTENT
+        ========================================== */
+
+        .main-content {
+            margin-left: 245px;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            font-size: 26px;
+            color: #263238;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            color: #78909c;
+            font-size: 14px;
+        }
+
+        .new-sale-btn {
+            background: #009688;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .new-sale-btn:hover {
+            background: #00796b;
+        }
+
+
+        /* =========================================
+           CARD
+        ========================================== */
+
+        .card {
+            background: #ffffff;
+            border-radius: 10px;
+            border: 1px solid #e5ecef;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid #edf1f3;
+        }
+
+        .card-header h3 {
+            font-size: 17px;
+            color: #37474f;
+        }
+
+
+        /* =========================================
+           TABLE
+        ========================================== */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f8fafb;
+        }
+
+        th {
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #78909c;
+            border-bottom: 1px solid #e8eef1;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px 16px;
+            border-bottom: 1px solid #edf1f3;
+            font-size: 14px;
+            vertical-align: top;
+        }
+
+        tbody tr:hover {
+            background: #fafcfc;
+        }
+
+
+        /* =========================================
+           SALE ID
+        ========================================== */
+
+        .sale-id {
+            color: #00796b;
+            font-weight: 700;
+        }
+
+
+        /* =========================================
+           CUSTOMER
+        ========================================== */
+
+        .customer-name {
+            font-weight: 600;
+            color: #37474f;
+            margin-bottom: 4px;
+        }
+
+        .customer-phone {
+            font-size: 12px;
+            color: #90a4ae;
+        }
+
+
+        /* =========================================
+           MEDICINES
+        ========================================== */
+
+        .medicine-item {
+            margin-bottom: 7px;
+        }
+
+        .medicine-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .medicine-name {
+            font-weight: 600;
+            color: #455a64;
+        }
+
+        .medicine-details {
+            font-size: 12px;
+            color: #90a4ae;
+            margin-top: 2px;
+        }
+
+
+        /* =========================================
+           PAYMENT BADGE
+        ========================================== */
+
+        .payment-badge {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+           TOTAL
+        ========================================== */
+
+        .total-amount {
+            font-weight: 700;
+            color: #263238;
+            white-space: nowrap;
+        }
+
+
+        /* =========================================
+           VIEW INVOICE
+        ========================================== */
+
+        .invoice-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: #e0f2f1;
+            color: #00796b;
+            border: 1px solid #b2dfdb;
+            padding: 7px 11px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .invoice-btn:hover {
+            background: #009688;
+            color: #ffffff;
+        }
+
+        /* =========================================
+   DELETE SALE
+========================================== */
+
+.delete-btn {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+    padding: 7px 11px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 6px;
+}
+
+.delete-btn:hover {
+    background: #c62828;
+    color: #ffffff;
+    
+}
+
+
+        /* =========================================
+           EMPTY STATE
+        ========================================== */
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #90a4ae;
+        }
+
+        .empty-state .icon {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .page-header {
+                align-items: flex-start;
+                gap: 15px;
+                flex-direction: column;
+            }
+        }
+
+        /* =========================================
+   HEADER ACTION BUTTONS
+========================================== */
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.deleted-history-btn {
+    display: inline-block;
+    background: #ffebee;
+    color: #c62828;
+    text-decoration: none;
+    padding: 11px 16px;
+    border: 1px solid #ffcdd2;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.deleted-history-btn:hover {
+    background: #c62828;
+    color: #ffffff;
+}
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
+
+    {% include 'store/includes/sidebar.html' %}
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    <main class="main-content">
+
+
+       <!-- PAGE HEADER -->
+
+<div class="page-header">
+
+    <div>
+        <h1>Sales & Invoice</h1>
+
+        <p>
+            View walk-in customer sales and invoice history
+        </p>
+    </div>
+
+    <div class="header-actions">
+
+        <a
+            href="{% url 'deleted_sales_list' %}"
+            class="deleted-history-btn"
+        >
+            🗑 Deleted History
+        </a>
+
+        <a
+            href="{% url 'walk_in_pos' %}"
+            class="new-sale-btn"
+        >
+            + New Sale
+        </a>
+
+    </div>
+
+</div>
+        <!-- =========================================
+             SALES HISTORY
+        ========================================== -->
+
+        <div class="card">
+
+            <div class="card-header">
+                <h3>Walk-in Sales History</h3>
+            </div>
+
+
+            {% if sales %}
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Sale ID</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Purchased Medicines</th>
+                            <th>Payment</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for sale in sales %}
+
+                        <tr>
+
+                            <!-- SALE ID -->
+
+                            <td>
+                                <span class="sale-id">
+                                    {{ sale.sale_id }}
+                                </span>
+                            </td>
+
+
+                            <!-- DATE -->
+
+                            <td>
+                                {{ sale.sale_date|date:"d M Y" }}
+
+                                <div class="customer-phone">
+                                    {{ sale.sale_date|date:"h:i A" }}
+                                </div>
+                            </td>
+
+
+                            <!-- CUSTOMER -->
+
+                            <td>
+
+                                <div class="customer-name">
+                                    {{ sale.customer_name|default:"Walk-in Customer" }}
+                                </div>
+
+                                <div class="customer-phone">
+                                    {{ sale.customer_phone|default:"No phone" }}
+                                </div>
+
+                            </td>
+
+
+                            <!-- PURCHASED MEDICINES -->
+
+                            <td>
+
+                                {% for item in sale.items.all %}
+
+                                    <div class="medicine-item">
+
+                                        <div class="medicine-name">
+                                            {{ item.medicine.name }}
+                                        </div>
+
+                                        <div class="medicine-details">
+
+                                            {{ item.medicine.medicine_id|default:"-" }}
+
+                                            &nbsp; • &nbsp;
+
+                                            Qty: {{ item.quantity }}
+
+                                            &nbsp; • &nbsp;
+
+                                            ₹{{ item.line_total|floatformat:2 }}
+
+                                        </div>
+
+                                    </div>
+
+                                {% empty %}
+
+                                    <span>-</span>
+
+                                {% endfor %}
+
+                            </td>
+
+
+                            <!-- PAYMENT -->
+
+                            <td>
+
+                                <span class="payment-badge">
+                                    {{ sale.payment_method }}
+                                </span>
+
+                            </td>
+
+
+                            <!-- TOTAL -->
+
+                            <td>
+
+                                <span class="total-amount">
+                                    ₹{{ sale.total_amount|floatformat:2 }}
+                                </span>
+
+                            </td>
+
+
+                           <!-- ACTION -->
+
+<td>
+
+    <!-- VIEW INVOICE -->
+    <a
+        href="{% url 'sale_invoice' sale.id %}"
+        class="invoice-btn"
+    >
+        View Invoice
+    </a>
+
+
+    <!-- DELETE SALE HISTORY -->
+    <form
+        method="POST"
+        action="{% url 'delete_sale' sale.id %}"
+        style="display: inline;"
+        onsubmit="return confirm('Are you sure you want to delete {{ sale.sale_id }} history? Medicine stock will not be changed.');"
+    >
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="delete-btn"
+        >
+            🗑 Delete
+        </button>
+
+    </form>
+
+</td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+
+            <!-- NO SALES -->
+
+            <div class="empty-state">
+
+                <div class="icon">
+                    🧾
+                </div>
+
+                <h3>No Sales Found</h3>
+
+                <p>
+                    Walk-in POS sales will appear here.
+                </p>
+
+            </div>
+
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

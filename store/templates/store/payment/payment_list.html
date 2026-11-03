@@ -1,0 +1,1067 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Payment Management | MedCare</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f8fa;
+            color: #37474f;
+        }
+
+
+        /* =========================================
+           SIDEBAR
+        ========================================= */
+
+        .sidebar {
+            width: 245px;
+            height: 100vh;
+            background: #ffffff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 24px 16px;
+            overflow-y: auto;
+            border-right: 1px solid #e8eef1;
+            z-index: 1000;
+        }
+
+        .sidebar .brand {
+            padding: 0 10px 22px;
+        }
+
+        .sidebar .brand h2 {
+            color: #009688;
+            font-size: 24px;
+            margin-bottom: 3px;
+        }
+
+        .sidebar .brand p {
+            color: #90a4ae;
+            font-size: 12px;
+        }
+
+        .sidebar .menu-title {
+            color: #90a4ae;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin: 18px 10px 8px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 12px;
+            margin-bottom: 4px;
+            border-radius: 7px;
+            color: #546e7a;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover {
+            background: #e0f2f1;
+            color: #00796b;
+        }
+
+        .sidebar a.active {
+            background: #e0f2f1;
+            color: #00796b;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+           MAIN CONTENT
+        ========================================= */
+
+        .main-content {
+            margin-left: 245px;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+
+        /* =========================================
+           PAGE HEADER
+        ========================================= */
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            font-size: 26px;
+            color: #263238;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            color: #78909c;
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           SUMMARY CARDS
+        ========================================= */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: #ffffff;
+            border: 1px solid #e5ecef;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .summary-label {
+            color: #78909c;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .summary-value {
+            color: #263238;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .amount-value {
+            color: #00796b;
+        }
+
+        /* =========================================
+   SEARCH & FILTERS
+========================================= */
+
+.filter-card {
+    background: #ffffff;
+    border: 1px solid #e5ecef;
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 20px;
+}
+
+.filter-form {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.2fr auto;
+    gap: 14px;
+    align-items: end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.filter-group label {
+    color: #607d8b;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.filter-group input,
+.filter-group select {
+    width: 100%;
+    height: 40px;
+    padding: 0 11px;
+    border: 1px solid #dce5e8;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #37474f;
+    font-size: 13px;
+    outline: none;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    border-color: #26a69a;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.filter-btn {
+    height: 40px;
+    padding: 0 15px;
+    border: none;
+    border-radius: 6px;
+    background: #00897b;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.filter-btn:hover {
+    background: #00796b;
+}
+
+.reset-btn {
+    height: 40px;
+    padding: 0 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #cfd8dc;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #607d8b;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.reset-btn:hover {
+    background: #f5f7f8;
+}
+
+        /* =========================================
+           PAYMENT CARD
+        ========================================= */
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e5ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid #edf1f3;
+        }
+
+        .card-header h3 {
+            color: #37474f;
+            font-size: 17px;
+        }
+
+
+        /* =========================================
+           TABLE
+        ========================================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 1050px;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f8fafb;
+        }
+
+        th {
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #78909c;
+            border-bottom: 1px solid #e8eef1;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px 16px;
+            border-bottom: 1px solid #edf1f3;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background: #fafcfc;
+        }
+
+
+        /* =========================================
+           PAYMENT DETAILS
+        ========================================= */
+
+        .payment-id {
+            color: #00796b;
+            font-weight: 700;
+        }
+
+        .reference-id {
+            color: #1565c0;
+            font-weight: 600;
+        }
+
+        .customer-name {
+            color: #37474f;
+            font-weight: 600;
+        }
+
+        .amount {
+            color: #263238;
+            font-weight: 700;
+        }
+
+        .small-text {
+            color: #90a4ae;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+
+        /* =========================================
+           SOURCE BADGES
+        ========================================= */
+
+        .source-badge {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .source-online {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .source-pos {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+
+        /* =========================================
+           STATUS BADGES
+        ========================================= */
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .status-paid {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-pending {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .status-failed {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .status-refunded {
+            background: #eceff1;
+            color: #546e7a;
+        }
+
+        /* =========================================
+   ACTION BUTTON
+========================================= */
+
+.view-btn {
+    display: inline-block;
+    padding: 7px 13px;
+    background: #e0f2f1;
+    color: #00796b;
+    border: 1px solid #b2dfdb;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.view-btn:hover {
+
+    background: #00796b;
+    color: #ffffff;
+}
+
+        /* =========================================
+           EMPTY STATE
+        ========================================= */
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #90a4ae;
+        }
+
+        .empty-state .icon {
+            font-size: 44px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            color: #455a64;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 1100px) {
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         COMMON SIDEBAR
+    ========================================== -->
+
+    {% include 'store/includes/sidebar.html' %}
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    <main class="main-content">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+            <h1>
+                💰 Payment Management
+            </h1>
+
+            <p>
+                Track payments from online orders and walk-in sales.
+            </p>
+
+        </div>
+
+
+        <!-- =========================================
+             SUMMARY CARDS
+        ========================================== -->
+
+        <div class="summary-grid">
+
+
+            <!-- TOTAL PAYMENTS -->
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Total Payments
+                </div>
+
+                <div class="summary-value">
+                    {{ total_payments }}
+                </div>
+
+            </div>
+
+
+            <!-- PAID -->
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Paid Payments
+                </div>
+
+                <div class="summary-value">
+                    {{ paid_count }}
+                </div>
+
+            </div>
+
+
+            <!-- PENDING -->
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Pending Payments
+                </div>
+
+                <div class="summary-value">
+                    {{ pending_count }}
+                </div>
+
+            </div>
+
+
+            <!-- TOTAL RECEIVED -->
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Total Received
+                </div>
+
+                <div class="summary-value amount-value">
+                    ₹{{ total_received|floatformat:2 }}
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================================
+     SEARCH & FILTERS
+========================================== -->
+
+<div class="filter-card">
+
+    <form method="GET" class="filter-form">
+
+        <!-- SEARCH -->
+
+        <div class="filter-group search-group">
+
+            <label>
+                Search Payment
+            </label>
+
+            <input
+                type="text"
+                name="search"
+                value="{{ search }}"
+                placeholder="Payment ID, Reference ID or Customer"
+            >
+
+        </div>
+
+
+        <!-- SOURCE -->
+
+        <div class="filter-group">
+
+            <label>
+                Source
+            </label>
+
+            <select name="source">
+
+                <option value="">
+                    All Sources
+                </option>
+
+                <option
+                    value="Online Order"
+                    {% if selected_source == 'Online Order' %}selected{% endif %}
+                >
+                    Online Order
+                </option>
+
+                <option
+                    value="Walk-in POS"
+                    {% if selected_source == 'Walk-in POS' %}selected{% endif %}
+                >
+                    Walk-in POS
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="filter-group">
+
+            <label>
+                Status
+            </label>
+
+            <select name="status">
+
+                <option value="">
+                    All Status
+                </option>
+
+                <option
+                    value="Paid"
+                    {% if selected_status == 'Paid' %}selected{% endif %}
+                >
+                    Paid
+                </option>
+
+                <option
+                    value="Pending"
+                    {% if selected_status == 'Pending' %}selected{% endif %}
+                >
+                    Pending
+                </option>
+
+                <option
+                    value="Failed"
+                    {% if selected_status == 'Failed' %}selected{% endif %}
+                >
+                    Failed
+                </option>
+
+                <option
+                    value="Refunded"
+                    {% if selected_status == 'Refunded' %}selected{% endif %}
+                >
+                    Refunded
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- PAYMENT METHOD -->
+
+        <div class="filter-group">
+
+            <label>
+                Payment Method
+            </label>
+
+            <select name="payment_method">
+
+                <option value="">
+                    All Methods
+                </option>
+
+                <option
+                    value="COD"
+                    {% if selected_payment_method == 'COD' %}selected{% endif %}
+                >
+                    Cash on Delivery
+                </option>
+
+                <option
+                    value="Cash"
+                    {% if selected_payment_method == 'Cash' %}selected{% endif %}
+                >
+                    Cash
+                </option>
+
+                <option
+                    value="UPI"
+                    {% if selected_payment_method == 'UPI' %}selected{% endif %}
+                >
+                    UPI
+                </option>
+
+                <option
+                    value="Card"
+                    {% if selected_payment_method == 'Card' %}selected{% endif %}
+                >
+                    Card
+                </option>
+
+                <option
+                    value="Online"
+                    {% if selected_payment_method == 'Online' %}selected{% endif %}
+                >
+                    Online Payment
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="filter-actions">
+
+            <button
+                type="submit"
+                class="filter-btn"
+            >
+                Search / Filter
+            </button>
+
+            <a
+                href="{% url 'payment_list' %}"
+                class="reset-btn"
+            >
+                Reset
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+        <!-- =========================================
+             PAYMENT RECORDS
+        ========================================== -->
+
+        <div class="card">
+
+
+            <div class="card-header">
+
+                <h3>
+                    Payment Records
+                </h3>
+
+            </div>
+
+
+            {% if payments %}
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+
+                        <!-- TABLE HEADER -->
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Payment ID
+                                </th>
+
+                                <th>
+                                    Source
+                                </th>
+
+                                <th>
+                                    Reference
+                                </th>
+
+                                <th>
+                                    Customer
+                                </th>
+
+                                <th>
+                                    Amount
+                                </th>
+
+                                <th>
+                                    Method
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Transaction ID
+                                </th>
+
+                                <th>
+                                    Payment Date
+                                </th>
+             
+
+                                <th>
+                                  Action
+                                   </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <!-- TABLE BODY -->
+
+                        <tbody>
+
+
+                            {% for payment in payments %}
+
+
+                                <tr>
+
+
+                                    <!-- PAYMENT ID -->
+
+                                    <td>
+
+                                        <span class="payment-id">
+                                            {{ payment.payment_id }}
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- SOURCE -->
+
+                                    <td>
+
+                                        {% if payment.source == 'Online Order' %}
+
+                                            <span class="source-badge source-online">
+                                                Online Order
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="source-badge source-pos">
+                                                Walk-in POS
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- REFERENCE ID -->
+
+                                    <td>
+
+                                        <span class="reference-id">
+                                            {{ payment.reference_id }}
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- CUSTOMER -->
+
+                                    <td>
+
+                                        {% if payment.customer_name %}
+
+                                            <span class="customer-name">
+                                                {{ payment.customer_name }}
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="small-text">
+                                                Walk-in Customer
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- AMOUNT -->
+
+                                    <td>
+
+                                        <span class="amount">
+                                            ₹{{ payment.amount|floatformat:2 }}
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- PAYMENT METHOD -->
+
+                                    <td>
+                                        {{ payment.get_payment_method_display }}
+                                    </td>
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        {% if payment.status == 'Paid' %}
+
+                                            <span class="status-badge status-paid">
+                                                Paid
+                                            </span>
+
+                                        {% elif payment.status == 'Pending' %}
+
+                                            <span class="status-badge status-pending">
+                                                Pending
+                                            </span>
+
+                                        {% elif payment.status == 'Failed' %}
+
+                                            <span class="status-badge status-failed">
+                                                Failed
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="status-badge status-refunded">
+                                                Refunded
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- TRANSACTION ID -->
+
+                                    <td>
+
+                                        {% if payment.transaction_id %}
+
+                                            {{ payment.transaction_id }}
+
+                                        {% else %}
+
+                                            <span class="small-text">
+                                                —
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- PAYMENT DATE -->
+
+                                    <td>
+
+                                        {{ payment.payment_date|date:"d M Y" }}
+
+                                        <div class="small-text">
+                                            {{ payment.payment_date|date:"h:i A" }}
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+
+    <a
+        href="{% url 'view_payment' payment.id %}"
+        class="view-btn"
+    >
+        View
+    </a>
+
+</td>
+
+                                </tr>
+
+
+                            {% endfor %}
+
+
+                        </tbody>
+
+
+                    </table>
+
+                </div>
+
+
+            {% else %}
+
+
+                <!-- NO PAYMENTS -->
+
+                <div class="empty-state">
+
+                    <div class="icon">
+                        💳
+                    </div>
+
+                    <h3>
+                        No Payment Records Yet
+                    </h3>
+
+                    <p>
+                        Payments from online orders and walk-in
+                        sales will appear here.
+                    </p>
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </main>
+
+
+</body>
+
+</html>

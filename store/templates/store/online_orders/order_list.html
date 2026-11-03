@@ -1,0 +1,892 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Online Orders | MedCare</title>
+
+    <style>
+
+        /* =========================================
+           PAGE
+        ========================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7f9;
+            color: #263238;
+        }
+
+
+        /* =========================================
+   SIDEBAR
+========================================= */
+.sidebar {
+    width: 245px;
+    height: 100vh;
+    background: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 24px 16px;
+    overflow-y: auto;
+    border-right: 1px solid #e8eef1;
+    z-index: 1000;
+}
+
+.sidebar .brand {
+    padding: 0 10px 22px;
+}
+
+.sidebar .brand h2 {
+    color: #009688;
+    font-size: 24px;
+    margin-bottom: 3px;
+}
+
+.sidebar .brand p {
+    color: #90a4ae;
+    font-size: 12px;
+}
+
+.sidebar .menu-title {
+    color: #90a4ae;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 18px 10px 8px;
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 12px;
+    margin-bottom: 4px;
+    border-radius: 7px;
+    color: #546e7a;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.sidebar a:hover {
+    background: #e0f2f1;
+    color: #00796b;
+}
+
+.sidebar a.active {
+    background: #e0f2f1;
+    color: #00796b;
+    font-weight: 600;
+}
+
+        /* =========================================
+           MAIN CONTENT
+        ========================================= */
+        .main-content {
+            margin-left: 245px;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+
+        /* =========================================
+           PAGE HEADER
+        ========================================= */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            font-size: 27px;
+            margin-bottom: 6px;
+            color: #263238;
+        }
+
+        .page-header p {
+            color: #78909c;
+            font-size: 14px;
+        }
+
+     
+
+        /* =========================================
+   CREATE ORDER BUTTON
+========================================= */
+.create-order-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #009688;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 11px 18px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.create-order-btn:hover {
+    background: #00796b;
+    transform: translateY(-1px);
+}
+
+        /* =========================================
+           SUMMARY CARDS
+        ========================================= */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+        }
+
+        .summary-card .label {
+            color: #78909c;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .summary-card .number {
+            font-size: 27px;
+            font-weight: 700;
+            color: #263238;
+        }
+
+
+        /* =========================================
+           FILTER SECTION
+        ========================================= */
+        .filter-box {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .search-input,
+        .status-select {
+            height: 42px;
+            border: 1px solid #dce4e8;
+            border-radius: 7px;
+            padding: 0 12px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .search-input {
+            flex: 1;
+        }
+
+        .status-select {
+            width: 190px;
+        }
+
+        .search-input:focus,
+        .status-select:focus {
+            border-color: #009688;
+        }
+
+        .filter-btn {
+            height: 42px;
+            padding: 0 20px;
+            border: none;
+            border-radius: 7px;
+            background: #009688;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .reset-btn {
+            height: 42px;
+            padding: 0 18px;
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            border: 1px solid #dce4e8;
+            border-radius: 7px;
+            color: #546e7a;
+            background: #ffffff;
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           ORDER TABLE
+        ========================================= */
+        .table-card {
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-title {
+            padding: 20px;
+            border-bottom: 1px solid #edf1f3;
+        }
+
+        .table-title h2 {
+            font-size: 18px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            background: #f8fafb;
+            color: #607d8b;
+            font-size: 12px;
+            text-transform: uppercase;
+            padding: 14px 15px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px;
+            border-top: 1px solid #edf1f3;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background: #fafcfc;
+        }
+
+        .order-id {
+            font-weight: 700;
+            color: #00897b;
+        }
+
+        .customer-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .customer-phone {
+            font-size: 12px;
+            color: #90a4ae;
+        }
+
+
+        /* =========================================
+           STATUS BADGES
+        ========================================= */
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .confirmed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .packed {
+            background: #e2e3f3;
+            color: #454d8c;
+        }
+
+        .shipped {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .out-delivery {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        .delivered {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .paid {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .payment-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .failed,
+        .refunded {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+
+        /* =========================================
+           ACTION BUTTON
+        ========================================= */
+        .view-btn {
+            display: inline-block;
+            padding: 7px 13px;
+            border-radius: 6px;
+            background: #e0f2f1;
+            color: #00796b;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .view-btn:hover {
+            background: #b2dfdb;
+        }
+
+
+        /* =========================================
+           EMPTY DATA
+        ========================================= */
+        .empty-row {
+            text-align: center;
+            padding: 35px;
+            color: #90a4ae;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+        @media (max-width: 1100px) {
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .status-select {
+                width: 100%;
+            }
+        }
+
+      /* =========================================
+   DELETE ORDER
+========================================= */
+
+.delete-btn {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+    padding: 7px 11px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 6px;
+}
+
+.delete-btn:hover {
+    background: #c62828;
+    color: #ffffff;
+}
+
+
+/* =========================================
+   ORDER ACTION BUTTONS
+========================================= */
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap;
+}
+
+.action-buttons .delete-btn {
+    margin-left: 0;
+    white-space: nowrap;
+}
+
+.action-buttons .view-btn {
+    white-space: nowrap;
+}
+
+/* =========================================
+   HEADER ACTION BUTTONS
+========================================= */
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* =========================================
+   DELETED HISTORY BUTTON
+========================================= */
+
+.deleted-history-btn {
+    display: inline-block;
+    background: #ffebee;
+    color: #c62828;
+    text-decoration: none;
+    padding: 11px 16px;
+    border: 1px solid #ffcdd2;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.deleted-history-btn:hover {
+    background: #c62828;
+    color: #ffffff;
+}
+
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================
+         COMMON SIDEBAR
+    ========================================== -->
+    {% include 'store/includes/sidebar.html' %}
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+    <main class="main-content">
+
+
+<!-- =========================================
+     PAGE HEADER
+========================================== -->
+<div class="page-header">
+
+    <div>
+        <h1>Online Orders</h1>
+        <p>Manage and track customer medicine orders.</p>
+    </div>
+
+
+    <!-- =========================================
+         HEADER ACTION BUTTONS
+    ========================================== -->
+    <div class="header-actions">
+
+        <!-- DELETED HISTORY -->
+        <a
+            href="{% url 'deleted_order_history' %}"
+            class="deleted-history-btn"
+        >
+            🗑 Deleted History
+        </a>
+
+
+        <!-- CREATE ORDER -->
+        <a
+            href="{% url 'create_order' %}"
+            class="create-order-btn"
+        >
+            + Create Order
+        </a>
+
+    </div>
+
+</div>
+        <!-- =========================================
+             SUMMARY CARDS
+        ========================================== -->
+        <div class="summary-grid">
+
+            <div class="summary-card">
+                <div class="label">Total Orders</div>
+                <div class="number">{{ total_orders|default:"0" }}</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="label">Pending Orders</div>
+                <div class="number">{{ pending_orders|default:"0" }}</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="label">Confirmed Orders</div>   
+                <div class="number">{{ confirmed_orders|default:"0" }}</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="label">Delivered Orders</div>
+                <div class="number">{{ delivered_orders|default:"0" }}</div>
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             SEARCH AND FILTER
+        ========================================== -->
+        <div class="filter-box">
+
+            <form method="GET">
+
+                <div class="filter-row">
+
+                    <input
+                        type="text"
+                        name="search"
+                        class="search-input"
+                        placeholder="Search Order ID, Customer or Phone..."
+                        value="{{ search }}"
+                    >
+
+                    <select
+                        name="status"
+                        class="status-select"
+                    >
+                        <option value="">All Status</option>
+
+                        <option value="Pending"
+                            {% if selected_status == 'Pending' %}selected{% endif %}>
+                            Pending
+                        </option>
+
+                        <option value="Confirmed"
+                            {% if selected_status == 'Confirmed' %}selected{% endif %}>
+                            Confirmed
+                        </option>
+
+                        <option value="Packed"
+                            {% if selected_status == 'Packed' %}selected{% endif %}>
+                            Packed
+                        </option>
+
+                        <option value="Shipped"
+                            {% if selected_status == 'Shipped' %}selected{% endif %}>
+                            Shipped
+                        </option>
+
+                        <option value="Out for Delivery"
+                            {% if selected_status == 'Out for Delivery' %}selected{% endif %}>
+                            Out for Delivery
+                        </option>
+
+                        <option value="Delivered"
+                            {% if selected_status == 'Delivered' %}selected{% endif %}>
+                            Delivered
+                        </option>
+
+                        <option value="Cancelled"
+                            {% if selected_status == 'Cancelled' %}selected{% endif %}>
+                            Cancelled
+                        </option>
+
+                    </select>
+
+                    <button
+                        type="submit"
+                        class="filter-btn"
+                    >
+                        Search / Filter
+                    </button>
+
+                    <a
+                        href="{% url 'order_list' %}"
+                        class="reset-btn"
+                    >
+                        Reset
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- =========================================
+             ORDER TABLE
+        ========================================== -->
+        <div class="table-card">
+
+            <div class="table-title">
+                <h2>Order List</h2>
+            </div>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>S.No.</th>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Order Date</th>
+                            <th>Amount</th>
+                            <th>Payment</th>
+                            <th>Payment Status</th>
+                            <th>Order Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for order in orders %}
+
+                        <tr>
+
+                            <td>{{ forloop.counter }}</td>
+
+                            <td>
+                                <span class="order-id">
+                                    {{ order.order_id }}
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="customer-name">
+                                    {{ order.customer_name }}
+                                </div>
+
+                                <div class="customer-phone">
+                                    {{ order.phone }}
+                                </div>
+                            </td>
+
+                            <td>
+                                {{ order.order_date|date:"d M Y, h:i A" }}
+                            </td>
+
+                            <td>
+                                ₹{{ order.total_amount }}
+                            </td>
+
+                            <td>
+                                {{ order.get_payment_method_display }}
+                            </td>
+
+                            <td>
+
+                                {% if order.payment_status == 'Paid' %}
+
+                                    <span class="badge paid">
+                                        Paid
+                                    </span>
+
+                                {% elif order.payment_status == 'Failed' %}
+
+                                    <span class="badge failed">
+                                        Failed
+                                    </span>
+
+                                {% elif order.payment_status == 'Refunded' %}
+
+                                    <span class="badge refunded">
+                                        Refunded
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge payment-pending">
+                                        Pending
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+
+                                {% if order.status == 'Confirmed' %}
+
+                                    <span class="badge confirmed">
+                                        Confirmed
+                                    </span>
+
+                                {% elif order.status == 'Packed' %}
+
+                                    <span class="badge packed">
+                                        Packed
+                                    </span>
+
+                                {% elif order.status == 'Shipped' %}
+
+                                    <span class="badge shipped">
+                                        Shipped
+                                    </span>
+
+                                {% elif order.status == 'Out for Delivery' %}
+
+                                    <span class="badge out-delivery">
+                                        Out for Delivery
+                                    </span>
+
+                                {% elif order.status == 'Delivered' %}
+
+                                    <span class="badge delivered">
+                                        Delivered
+                                    </span>
+
+                                {% elif order.status == 'Cancelled' %}
+
+                                    <span class="badge cancelled">
+                                        Cancelled
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge pending">
+                                        Pending
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+
+ <!-- VIEW ORDER -->
+  <div class="action-buttons">
+<a
+    href="{% url 'view_order' order.id %}"
+    class="view-btn"
+>
+    View
+</a>
+
+
+<!-- ASSIGN DELIVERY
+     Only for shipped orders
+-->
+{% if order.status == 'Shipped' %}
+
+    {% if not order.delivery %}
+
+        <a
+            href="{% url 'assign_delivery' order.id %}"
+            class="view-btn"
+        >
+            🚚 Assign Delivery
+        </a>
+
+    {% else %}
+
+        <span class="small-text">
+            Delivery Assigned
+        </span>
+
+    {% endif %}
+
+{% endif %}
+
+
+<!-- DELETE ORDER -->
+<form
+    method="POST"
+    action="{% url 'delete_order' order.id %}"
+    style="display:inline;"
+    onsubmit="return confirm('Are you sure you want to delete this order?');"
+>
+    {% csrf_token %}
+
+    <button
+    type="submit"
+    class="delete-btn"
+>
+    🗑 Delete
+</button>
+
+</form>
+
+</div>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+    <td
+        colspan="9"
+        class="empty-row"
+    >
+        No online orders found.
+    </td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</main>
+
+</body>
+
+</html>
