@@ -40,3 +40,6 @@ htmlcov/
 
 
 medicines_backup.json
+
+# Django collected static files
+staticfiles/
